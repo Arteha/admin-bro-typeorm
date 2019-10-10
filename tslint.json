@@ -1,0 +1,86 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {
+    "no-unused-expression": true
+  },
+  "rules": {
+    "object-literal-shorthand": false,
+    "forin": false,
+    "max-file-line-count": false,
+    "no-console": false,
+    "trailing-comma": false,
+    "triple-equals": false,
+    "eofline": false,
+    "interface-over-type-literal": false,
+    "space-before-function-paren": false,
+    "quotemark": [
+      true,
+      "double"
+    ],
+    "indent": false,
+    "member-access": true,
+    "ordered-imports": [
+      false
+    ],
+    "max-line-length": [true, 120],
+    "only-arrow-functions": false,
+    "member-ordering": [
+      true,
+      {
+        "order": [
+          "public-static-field",
+          "private-static-field",
+          "public-instance-field",
+          "private-instance-field",
+          "public-constructor",
+          "private-constructor",
+          "public-instance-method",
+          "protected-instance-method",
+          "private-instance-method",
+          "public-static-method",
+          "protected-static-method",
+          "private-static-method"
+        ]
+      }
+    ],
+    "curly": false,
+    "interface-name": [
+      false
+    ],
+    "array-type": [
+      false
+    ],
+    "no-empty-interface": false,
+    "no-empty": false,
+    "arrow-parens": false,
+    "ban-types": false,
+    "object-literal-sort-keys": false,
+    "no-unused-expression": false,
+    "max-classes-per-file": false,
+    "variable-name": [
+      false
+    ],
+    "one-line": [
+      false,
+      "check-catch",
+      "check-finally",
+      "check-else",
+      "check-open-brace",
+      "check-whitespace"
+    ],
+    "whitespace": false,
+    "no-trailing-whitespace": false,
+    "no-shadowed-variable": false,
+    "no-string-literal": false,
+    "linebreak-style": false,
+    "object-literal-key-quotes": false,
+    "no-var-requires": false,
+    "one-variable-per-declaration": [
+      false
+    ]
+  },
+  "rulesDirectory": []
+}

@@ -1,0 +1,30 @@
+{
+  "name": "admin-bro-typeorm",
+  "version": "0.1.0",
+  "description": "TypeORM adapter for AdminBro",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arteha/admin-bro-typeorm.git"
+  },
+  "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "admin-bro": ">=1.2.0",
+    "typeorm": ">=0.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "12.0.10",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "admin-bro": "^1.2.0",
+    "typeorm": "^0.2.1"
+  }
+}
