@@ -39,7 +39,7 @@ export class Property extends (BaseProperty as any)
 
     constructor(column: ColumnMetadata, path: string, model: typeof BaseEntity)
     {
-        super({path: path}); // WARNING .field
+        super({path: path});
         this.column = column;
         this.model = model;
     }
@@ -51,7 +51,6 @@ export class Property extends (BaseProperty as any)
 
     public isEditable()
     {
-        // return !this.column.isVirtual;
         return true;
     }
 

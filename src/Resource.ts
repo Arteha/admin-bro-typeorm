@@ -139,7 +139,6 @@ export class Resource extends (BaseResource as any)
                     instance[p] = params[p];
 
                 await instance.save();
-                // const record = await this.findByPk(pk);
                 return instance as any;
             }
             throw new Error("Instance not found.");
@@ -157,9 +156,6 @@ export class Resource extends (BaseResource as any)
     public async delete(pk)
     {
         await this.model.delete(pk);
-        /*const instance = await this.model.findOne(pk);
-        if (instance)
-            return instance.remove();*/
     }
 
     public createValidationError(originalError)

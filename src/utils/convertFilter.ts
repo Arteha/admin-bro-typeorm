@@ -16,7 +16,6 @@ export function convertFilter(filter?: { resource: Resource, filters: Filters })
         for(const n in filters)
         {
             const one = filters[n];
-            console.log(one.value);
             if(["boolean", "number", "float", "object", "array"].includes(one.property.type()))
                 where[n] = JSON.parse(one.value);
             if(["date", "datetime"].includes(one.property.type()))
@@ -31,7 +30,6 @@ export function convertFilter(filter?: { resource: Resource, filters: Filters })
             else
                 where[n] = one.value;
         }
-        console.log(where);
         return where;
     }
 }
