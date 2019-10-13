@@ -1,7 +1,8 @@
-import {Property} from "./Property";
-import {BaseEntity, In, Repository} from "typeorm";
-import {convertFilter} from "./utils/convertFilter";
-const {BaseResource, BaseRecord, ValidationError} = require("admin-bro");
+import { Property } from "./Property";
+import { BaseEntity, Repository } from "typeorm";
+import { convertFilter } from "./utils/convertFilter";
+
+const { BaseResource, BaseRecord, ValidationError } = require("admin-bro");
 
 export const SEQUELIZE_VALIDATION_ERROR = "SequelizeValidationError";
 
@@ -41,12 +42,12 @@ export class Resource extends (BaseResource as any)
 
     public properties()
     {
-        return [...this.propsArray];
+        return [ ...this.propsArray ];
     }
 
     public property(path: string): Property
     {
-        return this.propsObject[path];
+        return this.propsObject[ path ];
     }
 
     public async count(filter)
@@ -58,42 +59,34 @@ export class Resource extends (BaseResource as any)
 
     public async populate(baseRecords, property: Property)
     {
-        // TODO: populate
-        return null;
-        const ids: Array<any> = baseRecords.map(baseRecord =>
+        const fks: Array<any> = baseRecords.map(baseRecord => baseRecord.params[ property.name() ]);
+
+        const instances = await this.model.findByIds(fks);
+        const instancesRecord: Record<string, BaseEntity> = {};
+        for (const instance of instances)
         {
-            const propertyName = property.name();
-            return baseRecord.param(propertyName);
-        });
-        const records = await this.model.find({where: {id: In(ids)}});
-        const recordsHash = records.reduce((memo, record) =>
-        {
-            memo[(record as any).id] = record;
-            return memo;
-        }, {});
+            if (instance.hasId())
+                instancesRecord[ (instance as any).id ] = instance;
+        }
+
         baseRecords.forEach((baseRecord) =>
         {
-            const id = baseRecord.params.id;
-            if(recordsHash[id])
-            {
-                const referenceRecord = new BaseRecord(
-                    recordsHash[id], this,
-                );
-                baseRecord.populated[property.name()] = referenceRecord;
-            }
+            const fk = baseRecord.params[ property.name() ];
+            if (instancesRecord[ fk ])
+                baseRecord.populated[ property.name() ] = new BaseRecord(instancesRecord[ fk ], this);
         });
         return baseRecords;
     }
 
-    public async find(filter, {limit = 20, offset = 0, sort = {}})
+    public async find(filter, { limit = 20, offset = 0, sort = {} })
     {
-        const {direction, sortBy} = sort as any;
+        const { direction, sortBy } = sort as any;
         const instances = await this.model.find({
             where: convertFilter(filter),
             take: limit,
             skip: offset,
             order: {
-                [sortBy]: (direction || "asc").toUpperCase()
+                [ sortBy ]: (direction || "asc").toUpperCase()
             }
         });
         return instances.map(instance => new BaseRecord(instance, this));
@@ -118,9 +111,9 @@ export class Resource extends (BaseResource as any)
             await instance.save();
             return instance;
         }
-        catch(error)
+        catch (error)
         {
-            if(error.name === SEQUELIZE_VALIDATION_ERROR)
+            if (error.name === SEQUELIZE_VALIDATION_ERROR)
             {
                 throw this.createValidationError(error);
             }
@@ -133,19 +126,19 @@ export class Resource extends (BaseResource as any)
         try
         {
             const instance = await this.model.findOne(pk);
-            if(instance)
+            if (instance)
             {
                 for (const p in params)
-                    instance[p] = params[p];
+                    instance[ p ] = params[ p ];
 
                 await instance.save();
                 return instance as any;
             }
             throw new Error("Instance not found.");
         }
-        catch(error)
+        catch (error)
         {
-            if(error.name === SEQUELIZE_VALIDATION_ERROR)
+            if (error.name === SEQUELIZE_VALIDATION_ERROR)
             {
                 throw this.createValidationError(error);
             }
@@ -162,8 +155,8 @@ export class Resource extends (BaseResource as any)
     {
         const errors = Object.keys(originalError.errors).reduce((memo, key) =>
         {
-            const {path, message, validatorKey} = originalError.errors[key];
-            memo[path] = {message, kind: validatorKey}; // eslint-disable-line no-param-reassign
+            const { path, message, validatorKey } = originalError.errors[ key ];
+            memo[ path ] = { message, kind: validatorKey }; // eslint-disable-line no-param-reassign
             return memo;
         }, {});
         return new ValidationError(`${this.name()} validation failed`, errors);
@@ -175,7 +168,7 @@ export class Resource extends (BaseResource as any)
         for (const col of columns)
         {
             const property = new Property(col, this.id(), this.model);
-            this.propsObject[col.propertyName] = property;
+            this.propsObject[ col.propertyName ] = property;
             this.propsArray.push(property);
         }
     }
@@ -186,7 +179,7 @@ export class Resource extends (BaseResource as any)
         {
             return rawResource.getRepository() instanceof Repository;
         }
-        catch(e)
+        catch (e)
         {
         }
 

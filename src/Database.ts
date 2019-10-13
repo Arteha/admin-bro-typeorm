@@ -1,6 +1,7 @@
-import {Resource} from "./Resource";
-import {Connection} from "typeorm";
-const {BaseDatabase} = require("admin-bro");
+import { Resource } from "./Resource";
+import { Connection } from "typeorm";
+
+const { BaseDatabase } = require("admin-bro");
 
 export class Database extends (BaseDatabase as any)
 {

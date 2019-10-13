@@ -1,36 +1,8 @@
-import {ColumnMetadata} from "typeorm/metadata/ColumnMetadata";
-import {BaseEntity} from "typeorm";
-const {BaseProperty} = require("admin-bro");
+import { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
+import { BaseEntity } from "typeorm";
+import { DATA_TYPES, DataType } from "./utils/data-types";
 
-type DataTypes = "string" | "number" | "float" | "datetime" | "date" | "array" | "object" | "boolean";
-
-const DATA_TYPES: Record<string, DataTypes> = {
-    "string": "string",
-    "varchar": "string",
-    "text": "string",
-    "integer": "number",
-    "bigint": "number",
-    "float": "float",
-    "real": "float",
-    "double": "float",
-    "decimal": "float",
-    "date": "datetime",
-    "datetime": "datetime",
-    "timestamp": "datetime",
-    "enum": "string",
-    "array": "array",
-    "json": "object",
-    "jsonb": "object",
-    "blob": "string",
-    "uuid": "string",
-    "cidr": "string",
-    "inet": "string",
-    "macaddr": "string",
-    // "range": "string",
-    "geometry": "string",
-    "boolean": "boolean",
-    "bool": "boolean"
-};
+const { BaseProperty } = require("admin-bro");
 
 export class Property extends (BaseProperty as any)
 {
@@ -39,7 +11,7 @@ export class Property extends (BaseProperty as any)
 
     constructor(column: ColumnMetadata, path: string, model: typeof BaseEntity)
     {
-        super({path: path});
+        super({ path: path });
         this.column = column;
         this.model = model;
     }
@@ -77,20 +49,21 @@ export class Property extends (BaseProperty as any)
     public availableValues()
     {
         const values = this.column.enum;
-        if(values)
+        if (values)
             return values.map(val => val.toString());
         return null;
     }
 
     public type(): any
     {
-        let type: string | null = null;
+        let type: DataType | null = null;
         if (typeof this.column.type == "function")
         {
             if (this.column.type == Number)
                 type = "number";
-        } else
-            type = DATA_TYPES[this.column.type as any];
+        }
+        else
+            type = DATA_TYPES[ this.column.type as any ];
 
         if (this.reference())
             return "reference";

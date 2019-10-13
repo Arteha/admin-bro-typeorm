@@ -11,24 +11,24 @@ export function convertFilter(filter?: { resource: Resource, filters: Filters })
         return {};
     else
     {
-        const {filters} = filter;
+        const { filters } = filter;
         const where = {};
-        for(const n in filters)
+        for (const n in filters)
         {
-            const one = filters[n];
-            if(["boolean", "number", "float", "object", "array"].includes(one.property.type()))
-                where[n] = JSON.parse(one.value);
-            if(["date", "datetime"].includes(one.property.type()))
+            const one = filters[ n ];
+            if ([ "boolean", "number", "float", "object", "array" ].includes(one.property.type()))
+                where[ n ] = JSON.parse(one.value);
+            else if ([ "date", "datetime" ].includes(one.property.type()))
             {
-                if(one.value.from && one.value.to)
-                    where[n] = Between(new Date(one.value.from), new Date(one.value.to));
-                else if(one.value.from)
-                    where[n] = MoreThanOrEqual(new Date(one.value.from));
-                else if(one.value.to)
-                    where[n] = LessThanOrEqual(new Date(one.value.to));
+                if (one.value.from && one.value.to)
+                    where[ n ] = Between(new Date(one.value.from), new Date(one.value.to));
+                else if (one.value.from)
+                    where[ n ] = MoreThanOrEqual(new Date(one.value.from));
+                else if (one.value.to)
+                    where[ n ] = LessThanOrEqual(new Date(one.value.to));
             }
             else
-                where[n] = one.value;
+                where[ n ] = one.value;
         }
         return where;
     }
