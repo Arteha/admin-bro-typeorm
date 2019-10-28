@@ -2,7 +2,14 @@
   "name": "admin-bro-typeorm",
   "version": "0.1.2",
   "description": "TypeORM adapter for AdminBro",
-  "keywords": ["typeorm", "provider", "admin-bro", "orm admin", "typeorm admin", "admin panel"],
+  "keywords": [
+    "typeorm",
+    "provider",
+    "admin-bro",
+    "orm admin",
+    "typeorm admin",
+    "admin panel"
+  ],
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
