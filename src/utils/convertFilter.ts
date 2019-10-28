@@ -5,6 +5,18 @@ import { Property } from "../Property";
 type Filter = { path: string, property: Property, value: any };
 type Filters = Record<string, Filter>;
 
+function safeParseJSON(json: string)
+{
+    try
+    {
+        return JSON.parse(json);
+    }
+    catch(e)
+    {
+        return null;
+    }
+}
+
 export function convertFilter(filter?: { resource: Resource, filters: Filters }): FindConditions<BaseEntity>
 {
     if (!filter)
@@ -17,7 +29,7 @@ export function convertFilter(filter?: { resource: Resource, filters: Filters })
         {
             const one = filters[ n ];
             if ([ "boolean", "number", "float", "object", "array" ].includes(one.property.type()))
-                where[ n ] = JSON.parse(one.value);
+                where[ n ] = safeParseJSON(one.value);
             else if ([ "date", "datetime" ].includes(one.property.type()))
             {
                 if (one.value.from && one.value.to)

@@ -42,6 +42,12 @@ export class Person extends BaseEntity
     
     @Column({type: 'varchar'})
     public lastName: string;
+    
+    // For fancy clickable relation links:
+    public toString(): string
+    {
+        return `${firstName} ${lastName}`;
+    }
 }
 
 ( async () =>
