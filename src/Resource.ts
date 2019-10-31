@@ -1,9 +1,9 @@
-import {Property} from "./Property";
-import {BaseEntity, Repository} from "typeorm";
-import {convertFilter} from "./utils/convertFilter";
-import {ExtendedRecord} from "./ExtendedRecord";
+import { Property } from "./Property";
+import { BaseEntity, Repository } from "typeorm";
+import { convertFilter } from "./utils/convertFilter";
+import { ExtendedRecord } from "./ExtendedRecord";
 
-const {BaseResource, ValidationError} = require("admin-bro");
+const { BaseResource, ValidationError } = require("admin-bro");
 
 export class Resource extends (BaseResource as any)
 {
@@ -41,12 +41,12 @@ export class Resource extends (BaseResource as any)
 
     public properties()
     {
-        return [...this.propsArray];
+        return [ ...this.propsArray ];
     }
 
-    public property(path: string): Property
+    public property(path: string): Property | null
     {
-        return this.propsObject[path];
+        return this.propsObject[ path ] || null;
     }
 
     public async count(filter)
@@ -58,35 +58,35 @@ export class Resource extends (BaseResource as any)
 
     public async populate(baseRecords, property: Property)
     {
-        const fks: Array<any> = baseRecords.map(baseRecord => baseRecord.params[property.name()]);
+        const fks: Array<any> = baseRecords.map(baseRecord => baseRecord.params[ property.name() ]);
 
         const instances = await this.model.findByIds(fks);
         const instancesRecord: Record<string, BaseEntity> = {};
         for (const instance of instances)
         {
-            if(instance.hasId())
-                instancesRecord[(instance as any).id] = instance;
+            if (instance.hasId())
+                instancesRecord[ (instance as any).id ] = instance;
         }
 
         baseRecords.forEach((baseRecord) =>
         {
-            const fk = baseRecord.params[property.name()];
-            const instance = instancesRecord[fk];
-            if(instance)
-                baseRecord.populated[property.name()] = new ExtendedRecord(instance, this);
+            const fk = baseRecord.params[ property.name() ];
+            const instance = instancesRecord[ fk ];
+            if (instance)
+                baseRecord.populated[ property.name() ] = new ExtendedRecord(instance, this);
         });
         return baseRecords;
     }
 
-    public async find(filter, {limit = 10, offset = 0, sort = {}})
+    public async find(filter, { limit = 10, offset = 0, sort = {} })
     {
-        const {direction, sortBy} = sort as any;
+        const { direction, sortBy } = sort as any;
         const instances = await this.model.find({
             where: convertFilter(filter),
             take: limit,
             skip: offset,
             order: {
-                [sortBy]: (direction || "asc").toUpperCase()
+                [ sortBy ]: (direction || "asc").toUpperCase()
             }
         });
         return instances.map(instance => new ExtendedRecord(instance, this));
@@ -104,7 +104,7 @@ export class Resource extends (BaseResource as any)
 
     public async create(params: any): Promise<any>
     {
-        const instance = await this.model.create(params);
+        const instance = await this.model.create(this.prepareParams(params));
         await instance.save();
         return instance;
     }
@@ -112,10 +112,11 @@ export class Resource extends (BaseResource as any)
     public async update(pk, params: any = {})
     {
         const instance = await this.model.findOne(pk);
-        if(instance)
+        if (instance)
         {
+            params = this.prepareParams(params);
             for (const p in params)
-                instance[p] = params[p];
+                instance[ p ] = params[ p ];
 
             await instance.save();
             return instance;
@@ -132,8 +133,8 @@ export class Resource extends (BaseResource as any)
     {
         const errors = Object.keys(originalError.errors).reduce((memo, key) =>
         {
-            const {path, message, validatorKey} = originalError.errors[key];
-            memo[path] = {message, kind: validatorKey}; // eslint-disable-line no-param-reassign
+            const { path, message, validatorKey } = originalError.errors[ key ];
+            memo[ path ] = { message, kind: validatorKey }; // eslint-disable-line no-param-reassign
             return memo;
         }, {});
         return new ValidationError(`${this.name()} validation failed`, errors);
@@ -145,16 +146,31 @@ export class Resource extends (BaseResource as any)
         for (const col of columns)
         {
             const property = new Property(col, this.id(), this.model);
-            this.propsObject[col.propertyName] = property;
+            this.propsObject[ col.propertyName ] = property;
             this.propsArray.push(property);
         }
+    }
+
+    private prepareParams(params: Object): Object
+    {
+        for(const p in params)
+        {
+            const property = this.property(p);
+            if(property && property.type() == "object")
+                params[p] = JSON.parse(params[p]);
+        }
+        return params;
     }
 
     public static isAdapterFor(rawResource: any)
     {
         try
-        { return rawResource.getRepository() instanceof Repository; }
-        catch(e)
-        { return false; }
+        {
+            return rawResource.getRepository() instanceof Repository;
+        }
+        catch (e)
+        {
+            return false;
+        }
     }
 }
