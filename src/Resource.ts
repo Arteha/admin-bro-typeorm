@@ -3,9 +3,9 @@ import { BaseEntity, Repository } from "typeorm";
 import { convertFilter } from "./utils/convertFilter";
 import { ExtendedRecord } from "./ExtendedRecord";
 
-const { BaseResource, ValidationError } = require("admin-bro");
+import { BaseResource, ValidationError } from 'admin-bro'
 
-export class Resource extends (BaseResource as any)
+export class Resource extends BaseResource
 {
     private model: typeof BaseEntity;
     private propsObject: Record<string, Property> = {};
@@ -106,7 +106,7 @@ export class Resource extends (BaseResource as any)
     {
         const instance = await this.model.create(this.prepareParams(params));
         await instance.save();
-        return instance;
+        return new ExtendedRecord(instance, this);
     }
 
     public async update(pk, params: any = {})
@@ -119,7 +119,7 @@ export class Resource extends (BaseResource as any)
                 instance[ p ] = params[ p ];
 
             await instance.save();
-            return instance;
+            return new ExtendedRecord(instance, this);
         }
         throw new Error("Instance not found.");
     }

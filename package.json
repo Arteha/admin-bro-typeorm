@@ -23,16 +23,18 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=1.2.0",
+    "admin-bro": ">=1.4.0-beta.9",
     "typeorm": ">=0.2.1"
   },
   "devDependencies": {
     "@types/node": "12.0.10",
+    "admin-bro": ">=1.4.0-beta.9",
+    "chai": "^4.2.0",
+    "mocha": "^6.2.2",
     "tslint": "^5.20.0",
     "typescript": "^3.6.3"
   },
   "dependencies": {
-    "admin-bro": "^1.2.0",
     "typeorm": "^0.2.1"
   }
 }

@@ -2,9 +2,9 @@ import { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
 import { BaseEntity } from "typeorm";
 import { DATA_TYPES, DataType } from "./utils/data-types";
 
-const { BaseProperty } = require("admin-bro");
+import { BaseProperty } from "admin-bro";
 
-export class Property extends (BaseProperty as any)
+export class Property extends BaseProperty
 {
     public model: typeof BaseEntity;
     public column: ColumnMetadata;

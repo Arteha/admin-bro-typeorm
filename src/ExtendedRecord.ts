@@ -1,11 +1,11 @@
 import { BaseEntity } from "typeorm";
 import { Resource } from "./Resource";
 
-const { BaseRecord } = require("admin-bro");
+import { BaseRecord, RecordJSON, CurrentAdmin } from "admin-bro";
 
 const objectObject = ({}).toString();
 
-export class ExtendedRecord extends (BaseRecord as any)
+export class ExtendedRecord extends BaseRecord
 {
     private _title: string | null;
     private patchedParams: Object = {};
@@ -36,9 +36,9 @@ export class ExtendedRecord extends (BaseRecord as any)
             return super.title();
     }
 
-    public toJSON(...args: any[]): Object
+    public toJSON(currentAdmin?: CurrentAdmin): RecordJSON
     {
-        const obj = super.toJSON(args);
+        const obj = super.toJSON(currentAdmin);
         for(let p in this.patchedParams)
             obj.params[p] = this.patchedParams[p];
         obj.title = this.title();
