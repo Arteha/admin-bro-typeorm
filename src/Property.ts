@@ -8,8 +8,10 @@ export class Property extends BaseProperty
     public column: ColumnMetadata;
 
     constructor(column: ColumnMetadata)
-    {
-        super({ path: column.propertyPath });
+    {   
+        // for reference fields take database name (with ...Id)
+        const path = column.referencedColumn ? column.databaseName : column.propertyPath;
+        super({ path });
         this.column = column;
     }
 
@@ -17,10 +19,6 @@ export class Property extends BaseProperty
         return !this.isId()
             && !this.column.isCreateDate
             && !this.column.isUpdateDate;
-    }
-
-    public path(): string {
-        return this.reference() ? this.column.databaseName : this.column.propertyPath;
     }
 
     public isId()
