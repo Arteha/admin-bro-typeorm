@@ -16,7 +16,11 @@ export class Property extends BaseProperty
     public isEditable() {
         return !this.isId()
             && !this.column.isCreateDate
-            && !this.column.isUpdateDate
+            && !this.column.isUpdateDate;
+    }
+
+    public path(): string {
+        return this.reference() ? this.column.databaseName : this.column.propertyPath;
     }
 
     public isId()
@@ -47,21 +51,21 @@ export class Property extends BaseProperty
         if (typeof this.column.type == "function")
         {
             if (this.column.type == Number)
-                type = 'number';
+                type = "number";
             if (this.column.type == String)
-                type = 'string';
+                type = "string";
             if (this.column.type == Date)
-                type = 'datetime';
+                type = "datetime";
         }
         else
             type = DATA_TYPES[ this.column.type as any ];
 
         if (this.reference())
-            return 'reference';
+            return "reference";
 
         if (!type)
             console.warn(`Unhandled type: ${this.column.type}`);
 
-        return type || 'string';
+        return type || "string";
     }
 }

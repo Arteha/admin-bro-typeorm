@@ -3,12 +3,12 @@ import { BaseEntity, Repository, Connection } from "typeorm";
 
 import { convertFilter } from "./utils/convertFilter";
 
-import { BaseResource, ValidationError, Filter, BaseRecord } from 'admin-bro'
+import { BaseResource, ValidationError, Filter, BaseRecord } from "admin-bro";
 import { ParamsType } from "admin-bro/types/src/backend/adapters/base-record";
 
 export class Resource extends BaseResource
 {
-    public static validate: any
+    public static validate: any;
     private model: typeof BaseEntity;
     private propsObject: Record<string, Property> = {};
 
@@ -22,12 +22,12 @@ export class Resource extends BaseResource
 
     public databaseName(): string
     {
-        return this.model.getRepository().metadata.connection.options.database as string || 'typeorm'
+        return this.model.getRepository().metadata.connection.options.database as string || "typeorm";
     }
 
     public databaseType(): string
     {
-        return this.model.getRepository().metadata.connection.options.type || 'typeorm'
+        return this.model.getRepository().metadata.connection.options.type || "typeorm";
     }
 
     public name(): string
@@ -107,7 +107,7 @@ export class Resource extends BaseResource
     {
         const instance = await this.model.create(this.prepareParams(params));
 
-        await this.validateAndSave(instance)
+        await this.validateAndSave(instance);
         
         return instance;
     }
@@ -120,7 +120,7 @@ export class Resource extends BaseResource
             params = this.prepareParams(params);
             for (const p in params)
                 instance[ p ] = params[ p ];
-            await this.validateAndSave(instance)
+            await this.validateAndSave(instance);
             return instance;
         }
         throw new Error("Instance not found.");
@@ -146,11 +146,11 @@ export class Resource extends BaseResource
         for(const p in params)
         {
             const property = this.property(p);
-            if(property && property.type() === 'mixed')
+            if(property && property.type() === "mixed")
                 params[p] = JSON.parse(params[p]);
-            if(property && property.type() === 'number' && params[p] && params[p].toString().length)
+            if(property && property.type() === "number" && params[p] && params[p].toString().length)
                 params[p] = +params[p];
-            if(property && property.type() === 'reference' && params[p] && params[p].toString().length){
+            if(property && property.type() === "reference" && params[p] && params[p].toString().length){
                 /**
                  * references cannot be stored as an IDs in typeorm, so in order to mimic this )and
                  * not fetching reference resource) we are changing this: 
@@ -158,7 +158,7 @@ export class Resource extends BaseResource
                  * to this:
                  * { post: { id: 1 } }
                  */
-                params[property.column.propertyName] = { id: +params[p] }
+                params[property.column.propertyName] = { id: +params[p] };
             }
 
         }
@@ -167,7 +167,7 @@ export class Resource extends BaseResource
 
     private async validateAndSave(instance: BaseEntity) {
         if (Resource.validate) {
-            const errors = await Resource.validate(instance)
+            const errors = await Resource.validate(instance);
             if (errors && errors.length) {
                 const validationErrors = errors.reduce((memo, error) => ({
                     ...memo,
@@ -175,17 +175,17 @@ export class Resource extends BaseResource
                         type: Object.keys(error.constraints)[0],
                         message: Object.values(error.constraints)[0],
                     }
-                }), {})
+                }), {});
                 throw new ValidationError(`${this.name()} validation failed`, validationErrors);
             }
         }
         try {
             await instance.save();
         } catch (error) {
-            if (error.name === 'QueryFailedError') {
+            if (error.name === "QueryFailedError") {
                 throw new ValidationError(`${this.name()} validation failed`, {
                     [error.column]: {
-                        type: 'schema error',
+                        type: "schema error",
                         message: error.message
                     }
                 });

@@ -39,7 +39,7 @@ export class ExtendedRecord extends BaseRecord
     public toJSON(currentAdmin?: CurrentAdmin): RecordJSON
     {
         const obj = super.toJSON(currentAdmin);
-        for(let p in this.patchedParams)
+        for(const p in this.patchedParams)
             obj.params[p] = this.patchedParams[p];
         obj.title = this.title();
         return obj;
