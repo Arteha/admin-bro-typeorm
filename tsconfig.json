@@ -11,7 +11,9 @@
     "esModuleInterop": false,
     "declaration": true,
     "declarationDir": "./lib",
-    "outDir": "./lib"
+    "outDir": "./lib",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true
   },
   "include": [
     "./src/**/*.ts"

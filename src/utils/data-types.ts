@@ -1,3 +1,5 @@
+import { PropertyType } from "admin-bro";
+
 export type DataType = "string" | "number" | "float" | "datetime" | "date" | "array" | "object" | "boolean";
 
 const NUMBER = [
@@ -42,29 +44,29 @@ const BOOLEAN = [
     "bit", "bool", "boolean", "bit varying", "varbit"
 ];
 
-const ARRAY = [
-    // SimpleColumnType:
-    "simple-array", "array"
-];
+// const ARRAY = [
+//     // SimpleColumnType:
+//     "simple-array", "array"
+// ];
 
 const OBJECT = [
     // SimpleColumnType:
     "simple-json", "json", "jsonb"
 ];
 
-const DATA_TYPES: Record<string, DataType> = {};
+const DATA_TYPES: Record<string, PropertyType> = {};
 
-function extend(types: Array<string>, dataType: DataType): void
+function extend(types: Array<string>, dataType: PropertyType): void
 {
     for (const t of types)
         DATA_TYPES[ t ] = dataType;
 }
 
-extend(NUMBER, "number");
-extend(STRING, "string");
-extend(DATE, "datetime");
-extend(BOOLEAN, "boolean");
-extend(ARRAY, "array");
-extend(OBJECT, "object");
+extend(NUMBER, 'number');
+extend(STRING, 'string');
+extend(DATE, 'datetime');
+extend(BOOLEAN, 'boolean');
+// extend(ARRAY, "array");
+extend(OBJECT, 'mixed');
 
 export { DATA_TYPES };

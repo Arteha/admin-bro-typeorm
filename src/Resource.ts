@@ -1,15 +1,16 @@
 import { Property } from "./Property";
-import { BaseEntity, Repository } from "typeorm";
-import { convertFilter } from "./utils/convertFilter";
-import { ExtendedRecord } from "./ExtendedRecord";
+import { BaseEntity, Repository, Connection } from "typeorm";
 
-import { BaseResource, ValidationError } from 'admin-bro'
+import { convertFilter } from "./utils/convertFilter";
+
+import { BaseResource, ValidationError, Filter, BaseRecord } from 'admin-bro'
+import { ParamsType } from "admin-bro/types/src/backend/adapters/base-record";
 
 export class Resource extends BaseResource
 {
+    public static validate: any
     private model: typeof BaseEntity;
     private propsObject: Record<string, Property> = {};
-    private propsArray: Array<Property> = [];
 
     constructor(model: typeof BaseEntity)
     {
@@ -21,17 +22,17 @@ export class Resource extends BaseResource
 
     public databaseName(): string
     {
-        return (this.model as any).usedConnection.options.type;
+        return this.model.getRepository().metadata.connection.options.database as string || 'typeorm'
     }
 
     public databaseType(): string
     {
-        return (this.model as any).usedConnection.options.type;
+        return this.model.getRepository().metadata.connection.options.type || 'typeorm'
     }
 
     public name(): string
     {
-        return this.model.getRepository().metadata.tableName;
+        return this.model.name;
     }
 
     public id()
@@ -41,7 +42,7 @@ export class Resource extends BaseResource
 
     public properties()
     {
-        return [ ...this.propsArray ];
+        return [ ...Object.values(this.propsObject) ];
     }
 
     public property(path: string): Property | null
@@ -73,12 +74,12 @@ export class Resource extends BaseResource
             const fk = baseRecord.params[ property.name() ];
             const instance = instancesRecord[ fk ];
             if (instance)
-                baseRecord.populated[ property.name() ] = new ExtendedRecord(instance, this);
+                baseRecord.populated[ property.name() ] = new BaseRecord(instance, this);
         });
         return baseRecords;
     }
 
-    public async find(filter, { limit = 10, offset = 0, sort = {} })
+    public async find(filter: Filter, { limit = 10, offset = 0, sort = {} })
     {
         const { direction, sortBy } = sort as any;
         const instances = await this.model.find({
@@ -89,12 +90,12 @@ export class Resource extends BaseResource
                 [ sortBy ]: (direction || "asc").toUpperCase()
             }
         });
-        return instances.map(instance => new ExtendedRecord(instance, this));
+        return instances.map(instance => new BaseRecord(instance, this));
     }
 
     public async findOne(id)
     {
-        return new ExtendedRecord(await this.model.findOne(id), this);
+        return new BaseRecord(await this.model.findOne(id), this);
     }
 
     public async findById(id)
@@ -102,14 +103,16 @@ export class Resource extends BaseResource
         return await this.model.findOne(id);
     }
 
-    public async create(params: any): Promise<any>
+    public async create(params: any): Promise<ParamsType>
     {
         const instance = await this.model.create(this.prepareParams(params));
-        await instance.save();
-        return new ExtendedRecord(instance, this);
+
+        await this.validateAndSave(instance)
+        
+        return instance;
     }
 
-    public async update(pk, params: any = {})
+    public async update(pk, params: any = {}): Promise<ParamsType>
     {
         const instance = await this.model.findOne(pk);
         if (instance)
@@ -117,9 +120,8 @@ export class Resource extends BaseResource
             params = this.prepareParams(params);
             for (const p in params)
                 instance[ p ] = params[ p ];
-
-            await instance.save();
-            return new ExtendedRecord(instance, this);
+            await this.validateAndSave(instance)
+            return instance;
         }
         throw new Error("Instance not found.");
     }
@@ -129,25 +131,13 @@ export class Resource extends BaseResource
         await this.model.delete(pk);
     }
 
-    public createValidationError(originalError)
-    {
-        const errors = Object.keys(originalError.errors).reduce((memo, key) =>
-        {
-            const { path, message, validatorKey } = originalError.errors[ key ];
-            memo[ path ] = { message, kind: validatorKey }; // eslint-disable-line no-param-reassign
-            return memo;
-        }, {});
-        return new ValidationError(`${this.name()} validation failed`, errors);
-    }
-
     private prepareProps()
     {
         const columns = this.model.getRepository().metadata.columns;
         for (const col of columns)
         {
-            const property = new Property(col, this.id(), this.model);
-            this.propsObject[ col.propertyName ] = property;
-            this.propsArray.push(property);
+            const property = new Property(col);
+            this.propsObject[ property.path() ] = property;
         }
     }
 
@@ -156,17 +146,58 @@ export class Resource extends BaseResource
         for(const p in params)
         {
             const property = this.property(p);
-            if(property && property.type() == "object")
+            if(property && property.type() === 'mixed')
                 params[p] = JSON.parse(params[p]);
+            if(property && property.type() === 'number' && params[p] && params[p].toString().length)
+                params[p] = +params[p];
+            if(property && property.type() === 'reference' && params[p] && params[p].toString().length){
+                /**
+                 * references cannot be stored as an IDs in typeorm, so in order to mimic this )and
+                 * not fetching reference resource) we are changing this: 
+                 * { postId: "1" }
+                 * to this:
+                 * { post: { id: 1 } }
+                 */
+                params[property.column.propertyName] = { id: +params[p] }
+            }
+
         }
         return params;
+    }
+
+    private async validateAndSave(instance: BaseEntity) {
+        if (Resource.validate) {
+            const errors = await Resource.validate(instance)
+            if (errors && errors.length) {
+                const validationErrors = errors.reduce((memo, error) => ({
+                    ...memo,
+                    [error.property]: {
+                        type: Object.keys(error.constraints)[0],
+                        message: Object.values(error.constraints)[0],
+                    }
+                }), {})
+                throw new ValidationError(`${this.name()} validation failed`, validationErrors);
+            }
+        }
+        try {
+            await instance.save();
+        } catch (error) {
+            if (error.name === 'QueryFailedError') {
+                throw new ValidationError(`${this.name()} validation failed`, {
+                    [error.column]: {
+                        type: 'schema error',
+                        message: error.message
+                    }
+                });
+            }
+        }
     }
 
     public static isAdapterFor(rawResource: any)
     {
         try
         {
-            return rawResource.getRepository() instanceof Repository;
+            return !!rawResource.getRepository().metadata;
         }
         catch (e)
         {
