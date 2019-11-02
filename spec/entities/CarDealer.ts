@@ -5,12 +5,12 @@ import { Car } from "./Car";
 @Entity()
 export class CarDealer extends BaseEntity{
     @PrimaryGeneratedColumn()
-    id: number;
+    public id: number;
 
     @Column()
     @IsDefined()
-    name: string;
+    public name: string;
 
     @OneToMany(type=> Car, car => car.carDealer)
-    cars: Array<Car>
+    public cars: Array<Car>;
 }

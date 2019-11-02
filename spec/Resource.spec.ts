@@ -12,6 +12,7 @@ describe('Resource', () => {
   let data = {
     model: 'Tucson',
     name: 'Hyundai',
+    streetNumber: 'something',
     age: 4
   }
   
@@ -58,7 +59,7 @@ describe('Resource', () => {
 
   describe('#properties', () => {
     it('returns all the properties', () => {
-      expect(resource.properties()).to.have.lengthOf(6)
+      expect(resource.properties()).to.have.lengthOf(9)
     })
   })
 
@@ -97,6 +98,13 @@ describe('Resource', () => {
     it('returns params', async () => {
       const params = await resource.create(data)
       expect(params.id).not.to.be.undefined
+    })
+
+    it('stores Column with defined name property', async () => {
+      const params = await resource.create(data)
+      // console.log(resource.properties())
+      const storedRecord = await Car.findOne(params.id) as Car
+      expect(storedRecord.streetNumber).to.equal(data.streetNumber)
     })
 
     it('throws ValidationError for defined validations', async () => {
@@ -184,7 +192,7 @@ describe('Resource', () => {
     it('creates new resource', async () => {
       carParams = await resource.create({
         ...data,
-        carDealerId: carDealer.id
+        'carDealer.id': carDealer.id
       })
       
       expect(carParams.carDealerId).to.equal(carDealer.id)

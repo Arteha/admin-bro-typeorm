@@ -62,11 +62,11 @@ function extend(types: Array<string>, dataType: PropertyType): void
         DATA_TYPES[ t ] = dataType;
 }
 
-extend(NUMBER, 'number');
-extend(STRING, 'string');
-extend(DATE, 'datetime');
-extend(BOOLEAN, 'boolean');
+extend(NUMBER, "number");
+extend(STRING, "string");
+extend(DATE, "datetime");
+extend(BOOLEAN, "boolean");
 // extend(ARRAY, "array");
-extend(OBJECT, 'mixed');
+extend(OBJECT, "mixed");
 
 export { DATA_TYPES };

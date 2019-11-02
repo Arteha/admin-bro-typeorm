@@ -9,12 +9,14 @@ export class Property extends BaseProperty
 
     constructor(column: ColumnMetadata)
     {
-        super({ path: column.databaseName });
+        super({ path: column.propertyPath });
         this.column = column;
     }
 
     public isEditable() {
         return !this.isId()
+            && !this.column.isCreateDate
+            && !this.column.isUpdateDate
     }
 
     public isId()
@@ -48,6 +50,8 @@ export class Property extends BaseProperty
                 type = 'number';
             if (this.column.type == String)
                 type = 'string';
+            if (this.column.type == Date)
+                type = 'datetime';
         }
         else
             type = DATA_TYPES[ this.column.type as any ];

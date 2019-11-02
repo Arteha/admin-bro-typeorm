@@ -36,7 +36,7 @@ describe('Property', () => {
 
     it('returns the path of the property', () => {
       const column = columns.find(c => c.propertyName === 'carDealer') as ColumnMetadata
-      expect(new Property(column).path()).to.equal('carDealerId')
+      expect(new Property(column).path()).to.equal('carDealer.id')
     })
   })
 
@@ -49,6 +49,25 @@ describe('Property', () => {
     it('returns false for regular column', () => {
       const column = columns.find(c => c.propertyName === 'name') as ColumnMetadata
       expect(new Property(column).isId()).to.equal(false)
+    })
+  })
+
+  describe('#isEditable', () => {
+    it('returns false for id field', async () => {
+      const column = columns.find(c => c.propertyName === 'id') as ColumnMetadata
+      expect(new Property(column).isEditable()).to.equal(false)
+    })
+
+    it('returns false for createdAt and updatedAt fields', async () => {
+      const createdAt = columns.find(c => c.propertyName === 'createdAt') as ColumnMetadata
+      const updatedAt = columns.find(c => c.propertyName === 'updatedAt') as ColumnMetadata
+      expect(new Property(createdAt).isEditable()).to.equal(false)
+      expect(new Property(updatedAt).isEditable()).to.equal(false)
+    })
+
+    it('returns true for a regular field', async () => {
+      const column = columns.find(c => c.propertyName === 'name') as ColumnMetadata
+      expect(new Property(column).isEditable()).to.equal(true)
     })
   })
 
