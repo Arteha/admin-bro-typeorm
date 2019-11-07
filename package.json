@@ -13,7 +13,6 @@
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "scripts": {
-    "postinstall": "tsc",
     "build": "tsc",
     "watch": "tsc -w",
     "test": "mocha -r ts-node/register ./spec/**/*.spec.ts",
