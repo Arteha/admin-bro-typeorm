@@ -883,10 +883,10 @@ acorn@^7.1.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.1.0.tgz#949d36f2c292535da602283586c2477c57eb2d6c"
   integrity sha512-kL5CuoXA/dgxlBbVrflsflzQ3PAas7RYZB52NOm/6839iVYJgKMJ3cQJD+t2i5+qFa8h3MDpEOJiS64E8JLnSQ==
 
-admin-bro@>=1.4.0-beta.15:
-  version "1.4.0-beta.15"
-  resolved "https://registry.yarnpkg.com/admin-bro/-/admin-bro-1.4.0-beta.15.tgz#e98cdde6d44a18227e96373de942cc4ac1ed39ac"
-  integrity sha512-DvIcDfMGFYH9gVCZdadwxxwh8dq0o8YOBovuitHSRRdQ8UhxIJgiI3Mm1BN8jlYOz1SGbDFlWdaqf1kl3kpJrw==
+admin-bro@>=1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/admin-bro/-/admin-bro-1.4.0.tgz#e484a46c4e82c854cd2a726825f00c53181ea10a"
+  integrity sha512-4OFVr0vl499oIbARC6NMFJViijb9O68+wVwTbSvhDWdLNcCiWXGGFVDo62rfrauwutEJ6j6ojDnqqbib2ewFbg==
   dependencies:
     "@babel/core" "^7.2.0"
     "@babel/parser" "^7.6.2"
