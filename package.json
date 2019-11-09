@@ -14,7 +14,11 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w"
+    "watch": "tsc -w",
+    "test": "mocha -r ts-node/register ./spec/**/*.spec.ts",
+    "ts-node": "ts-node",
+    "lint": "tslint -c tslint.json './{src,spec}/**/*.ts'",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
   },
   "repository": {
     "type": "git",
@@ -23,16 +27,23 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=1.2.0",
+    "admin-bro": ">=1.4.0",
     "typeorm": ">=0.2.1"
   },
+  "optionalDependencies": {},
   "devDependencies": {
+    "@types/chai": "^4.2.4",
+    "@types/mocha": "^5.2.7",
     "@types/node": "12.0.10",
+    "admin-bro": ">=1.4.0",
+    "chai": "^4.2.0",
+    "class-validator": "^0.11.0",
+    "mocha": "^6.2.2",
+    "pg": "^7.12.1",
+    "ts-node": "^8.4.1",
+    "tsconfig-paths": "^3.9.0",
     "tslint": "^5.20.0",
+    "typeorm": "^0.2.1",
     "typescript": "^3.6.3"
-  },
-  "dependencies": {
-    "admin-bro": "^1.2.0",
-    "typeorm": "^0.2.1"
   }
 }

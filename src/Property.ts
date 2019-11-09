@@ -1,35 +1,24 @@
 import { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
-import { BaseEntity } from "typeorm";
-import { DATA_TYPES, DataType } from "./utils/data-types";
+import { DATA_TYPES } from "./utils/data-types";
 
-const { BaseProperty } = require("admin-bro");
+import { BaseProperty, PropertyType } from "admin-bro";
 
-export class Property extends (BaseProperty as any)
+export class Property extends BaseProperty
 {
-    public model: typeof BaseEntity;
     public column: ColumnMetadata;
 
-    constructor(column: ColumnMetadata, path: string, model: typeof BaseEntity)
-    {
-        super({ path: path });
+    constructor(column: ColumnMetadata)
+    {   
+        // for reference fields take database name (with ...Id)
+        const path = column.referencedColumn ? column.databaseName : column.propertyPath;
+        super({ path });
         this.column = column;
-        this.model = model;
     }
 
-    public name()
-    {
-        return this.column.propertyName;
-    }
-
-    public isEditable()
-    {
-        return true;
-    }
-
-    public isVisible()
-    {
-        // fields containing password are hidden by default
-        return !this.name().toLowerCase().includes("password");
+    public isEditable() {
+        return !this.isId()
+            && !this.column.isCreateDate
+            && !this.column.isUpdateDate;
     }
 
     public isId()
@@ -54,13 +43,17 @@ export class Property extends (BaseProperty as any)
         return null;
     }
 
-    public type(): any
+    public type(): PropertyType
     {
-        let type: DataType | null = null;
+        let type: PropertyType | null = null;
         if (typeof this.column.type == "function")
         {
             if (this.column.type == Number)
                 type = "number";
+            if (this.column.type == String)
+                type = "string";
+            if (this.column.type == Date)
+                type = "datetime";
         }
         else
             type = DATA_TYPES[ this.column.type as any ];
