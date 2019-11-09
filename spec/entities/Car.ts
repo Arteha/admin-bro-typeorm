@@ -44,9 +44,9 @@ export class Car extends BaseEntity{
     @RelationId((car: Car) => car.carDealer)
     public carDealerId: number;
 
-    @CreateDateColumn({ name: "created_at" })
+    @CreateDateColumn()
     public createdAt: Date;
 
-    @UpdateDateColumn({ name: "updated_at" })
+    @UpdateDateColumn()
     public updatedAt: Date;
 }
