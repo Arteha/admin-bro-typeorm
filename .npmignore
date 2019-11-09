@@ -1,5 +1,7 @@
 \.idea/
 node_modules/
 src/
+spec/
 package-lock\.json
+yarn\.lock
 *.db
