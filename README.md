@@ -10,9 +10,13 @@ The plugin can be registered using standard `AdminBro.registerAdapter` method.
 
 ```typescript
 import { Database, Resource } from "admin-bro-typeorm";
-const AdminBro = require('admin-bro');
+import AdminBro from 'admin-bro'
 
 AdminBro.registerAdapter({ Database, Resource });
+
+// optional: if you use class-validator you have to inject this to resource.
+import { validate } from 'class-validator'
+Resource.validate = validate;
 ```
 
 ## Example
@@ -21,14 +25,18 @@ AdminBro.registerAdapter({ Database, Resource });
 import {
     BaseEntity,
     Entity, PrimaryGeneratedColumn, Column,
-    createConnection
+    createConnection,
+    ManyToOne,
+    RelationId
 } from "typeorm";
 import * as express from "express";
 import { Database, Resource } from "admin-bro-typeorm";
+import { validate } from 'class-validator'
 
-const AdminBro = require("admin-bro");
-const AdminBroExpress = require("admin-bro-expressjs");
+import AdminBro from "admin-bro";
+import * as AdminBroExpress from "admin-bro-expressjs"
 
+Resource.validate = validate;
 AdminBro.registerAdapter({ Database, Resource });
 
 @Entity()
@@ -42,6 +50,13 @@ export class Person extends BaseEntity
     
     @Column({type: 'varchar'})
     public lastName: string;
+
+    @ManyToOne(type => CarDealer, carDealer => carDealer.cars)
+    organization: Organization;
+
+    // in order be able to fetch resources in admin-bro - we have to have id available
+    @RelationId((person: Person) => person.organization)
+    organizationId: number;
     
     // For fancy clickable relation links:
     public toString(): string
@@ -72,21 +87,10 @@ export class Person extends BaseEntity
 })();
 ```
 
+## ManyToOne
+
+Admin supports ManyToOne relationship but you also have to define @RealationId as stated in the example above.
+
 ## Warning
 
-Typescript developers who want to use admin-bro of version `~1.3.0` temporary avoid this construction till they fix it in the next versions.
-```typescript
-import { Database, Resource } from "admin-bro-typeorm";
-import { default as AdminBro } from "admin-bro"; // WARNING: for now is better to use const & require
-
-AdminBro.registerAdapter({ Database, Resource });
-```
-The reason of the problem is incorrect `*.d.ts` declarations for typings support. 
-
-They export sources directly from `./src`, for example, not from `./dist` or `./lib` (compilation output).
-
-You will have billion compilation errors kinda:
-
-`node_modules/admin-bro/src/backend/utils/view-helpers.ts(91,5): error TS2322: Type 'string | undefined' is not assignable to type 'string'.`
-
-So lets hope they'll fix it soon.
+Typescript developers who want to use admin-bro of version `~1.3.0` - don't do this - use `~1.4.0` instead.

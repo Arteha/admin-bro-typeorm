@@ -1,5 +1,5 @@
 import { Resource } from "./Resource";
-import { Connection } from "typeorm";
+import { Connection, BaseEntity } from "typeorm";
 
 const { BaseDatabase } = require("admin-bro");
 
@@ -10,18 +10,17 @@ export class Database extends (BaseDatabase as any)
         super(connection);
     }
 
-    public resources(): any
+    public resources(): Array<Resource>
     {
         const resources: Array<Resource> = [];
-
         for (const entityMetadata of this.connection.entityMetadatas)
-            resources.push(new Resource(entityMetadata.target as any) as any);
+            resources.push(new Resource(entityMetadata.target as typeof BaseEntity));
 
         return resources;
     }
 
-    public static isAdapterFor(database: any)
-    {
-        return database instanceof Connection;
+    public static isAdapterFor(connection: any)
+    {   
+        return !!connection.entityMetadatas;
     }
 }

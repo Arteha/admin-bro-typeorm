@@ -1,9 +1,5 @@
 import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual } from "typeorm";
-import { Resource } from "../Resource";
-import { Property } from "../Property";
-
-type Filter = { path: string, property: Property, value: any };
-type Filters = Record<string, Filter>;
+import { Filter } from "admin-bro";
 
 function safeParseJSON(json: string)
 {
@@ -17,7 +13,7 @@ function safeParseJSON(json: string)
     }
 }
 
-export function convertFilter(filter?: { resource: Resource, filters: Filters }): FindConditions<BaseEntity>
+export function convertFilter(filter?: Filter): FindConditions<BaseEntity>
 {
     if (!filter)
         return {};
