@@ -9,7 +9,7 @@ function safeParseJSON(json: string)
     }
     catch(e)
     {
-        return null;
+        return json;
     }
 }
 
