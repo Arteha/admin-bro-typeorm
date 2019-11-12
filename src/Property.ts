@@ -8,14 +8,20 @@ export class Property extends BaseProperty
     public column: ColumnMetadata;
 
     constructor(column: ColumnMetadata)
-    {   
+    {
         // for reference fields take database name (with ...Id)
         const path = column.referencedColumn ? column.databaseName : column.propertyPath;
         super({ path });
         this.column = column;
     }
 
-    public isEditable() {
+    public name()
+    {
+        return this.column.propertyName;
+    }
+
+    public isEditable()
+    {
         return !this.isId()
             && !this.column.isCreateDate
             && !this.column.isUpdateDate;
