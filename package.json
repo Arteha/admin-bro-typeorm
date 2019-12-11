@@ -18,6 +18,7 @@
     "test": "mocha -r ts-node/register ./spec/**/*.spec.ts",
     "ts-node": "ts-node",
     "lint": "tslint -c tslint.json './{src,spec}/**/*.ts'",
+    "postinstall": "tsc",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js"
   },
   "repository": {
