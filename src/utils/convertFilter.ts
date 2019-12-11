@@ -1,4 +1,4 @@
-import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual } from "typeorm";
+import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual, Like } from "typeorm";
 import { Filter } from "admin-bro";
 
 function safeParseJSON(json: string)
@@ -36,7 +36,7 @@ export function convertFilter(filter?: Filter): FindConditions<BaseEntity>
                     where[ n ] = LessThanOrEqual(new Date(one.value.to));
             }
             else
-                where[ n ] = one.value;
+                where[ n ] = Like(`%${one.value}%`);
         }
         return where;
     }

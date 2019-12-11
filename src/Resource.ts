@@ -1,5 +1,5 @@
 import { Property } from "./Property";
-import { BaseEntity, Repository, Connection } from "typeorm";
+import { BaseEntity } from "typeorm";
 
 import { convertFilter } from "./utils/convertFilter";
 
