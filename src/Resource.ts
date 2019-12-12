@@ -1,5 +1,5 @@
 import { Property } from "./Property";
-import { BaseEntity, Repository, Connection } from "typeorm";
+import { BaseEntity } from "typeorm";
 
 import { convertFilter } from "./utils/convertFilter";
 
@@ -152,10 +152,10 @@ export class Resource extends BaseResource
                 params[p] = +params[p];
             if(property && property.type() === "reference" && params[p] && params[p].toString().length){
                 /**
-                 * references cannot be stored as an IDs in typeorm, so in order to mimic this )and
-                 * not fetching reference resource) we are changing this: 
+                 * references cannot be stored as an IDs in typeorm, so in order to mimic this) and
+                 * not fetching reference resource) change this:
                  * { postId: "1" }
-                 * to this:
+                 * to that:
                  * { post: { id: 1 } }
                  */
                 params[property.column.propertyName] = { id: +params[p] };
