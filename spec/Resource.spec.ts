@@ -1,11 +1,12 @@
 import { expect } from "chai";
-
-import { Resource } from "../src/Resource";
-import { Car } from "./entities/Car";
-import { connect, close } from "./utils/testConnection";
 import { BaseProperty, BaseRecord, ValidationError } from "admin-bro";
 import { validate } from "class-validator";
+
+import { Car } from "./entities/Car";
 import { CarDealer } from "./entities/CarDealer";
+import { connect, close } from "./utils/testConnection";
+
+import { Resource } from "../src/Resource";
 
 describe("Resource", () => {
     let resource: Resource;
@@ -20,12 +21,13 @@ describe("Resource", () => {
         await connect();
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
         resource = new Resource(Car);
+        await Car.delete({});
+        await CarDealer.delete({});
     });
 
     after(async () => {
-        await Car.delete({});
         close();
     });
 
@@ -109,7 +111,7 @@ describe("Resource", () => {
                 });
             } catch (error) {
                 expect(error).to.be.instanceOf(ValidationError);
-                const errors = (error as ValidationError).errors;
+                const errors = (error as ValidationError).propertyErrors;
                 expect(Object.keys(errors)).to.have.lengthOf(2);
                 expect(errors["name"].type).to.equal("isDefined");
                 expect(errors["age"].type).to.equal("max");
@@ -125,7 +127,7 @@ describe("Resource", () => {
                 });
             } catch (error) {
                 expect(error).to.be.instanceOf(ValidationError);
-                const errors = (error as ValidationError).errors;
+                const errors = (error as ValidationError).propertyErrors;
                 expect(Object.keys(errors)[0]).to.equal("model");
                 expect(Object.keys(errors)).to.have.lengthOf(1);
                 expect(errors["model"].message).not.to.be.null;
@@ -143,10 +145,6 @@ describe("Resource", () => {
                 age: 4
             });
             record = await resource.findOne(params.id);
-        });
-
-        afterEach(async () => {
-            record && await resource.delete(record.id());
         });
 
         it("updates record name", async () => {
@@ -177,11 +175,6 @@ describe("Resource", () => {
             await carDealer.save();
         });
 
-        afterEach(async () => {
-            carParams && await resource.delete(carParams.id);
-            carDealer && await CarDealer.delete(carDealer);
-        });
-
         it("creates new resource", async () => {
             carParams = await resource.create({
                 ...data,
@@ -189,6 +182,39 @@ describe("Resource", () => {
             });
 
             expect(carParams.carDealerId).to.equal(carDealer.id);
+        });
+    });
+
+    describe("#delete", () => {
+        let carDealer: CarDealer;
+        let carParams;
+
+        beforeEach(async () => {
+            carDealer = CarDealer.create({ name: "dealPimp" });
+            await carDealer.save();
+            carParams = await resource.create({ ...data, "carDealerId": carDealer.id });
+        });
+
+        afterEach(async () => {
+            await Car.delete(carParams.id);
+            await CarDealer.delete(carDealer);
+        });
+        
+        it("deletes the resource", async () => {
+            await resource.delete(carParams.id);
+            expect(await resource.count({})).to.eq(0);
+        });
+
+        it("throws validation error when deleting record to which other record is related", async () => {
+            const carDealerResource = new Resource(CarDealer);
+            try {
+                await carDealerResource.delete(carDealer.id);
+            } catch (error) {
+                expect(error).to.be.instanceOf(ValidationError);
+                const baseError = (error as ValidationError).baseError;
+                expect(baseError && baseError.type).to.equal("QueryFailedError");
+                expect(baseError && baseError.message).not.to.equal(null);
+            }
         });
     });
 });

@@ -128,7 +128,17 @@ export class Resource extends BaseResource
 
     public async delete(pk)
     {
-        await this.model.delete(pk);
+        try {
+            await this.model.delete(pk);
+        } catch (error) {
+            if (error.name === "QueryFailedError") {
+                throw new ValidationError(`${this.name()} validation failed`, {}, {
+                    type: "QueryFailedError",
+                    message: error.message
+                });
+            }
+            throw error;
+        }
     }
 
     private prepareProps()
@@ -185,7 +195,7 @@ export class Resource extends BaseResource
             if (error.name === "QueryFailedError") {
                 throw new ValidationError(`${this.name()} validation failed`, {
                     [error.column]: {
-                        type: "schema error",
+                        type: "QueryFailedError",
                         message: error.message
                     }
                 });
