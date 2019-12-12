@@ -4,4 +4,5 @@ src/
 spec/
 package-lock\.json
 yarn\.lock
-*.db
+*\.db
+ormconfig\.js

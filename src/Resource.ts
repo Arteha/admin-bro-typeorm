@@ -1,7 +1,7 @@
 import "reflect-metadata";
 import { Property } from "./Property";
-import { BaseEntity } from "typeorm";
-import { BaseResource, ValidationError, Filter } from "admin-bro";
+import { BaseEntity, Like } from "typeorm";
+import { BaseResource, ValidationError, Filter, PropertyType } from "admin-bro";
 import { ParamsType } from "admin-bro/types/src/backend/adapters/base-record";
 import { convertFilter } from "./utils/convertFilter";
 import { ExtendedRecord } from "./ExtendedRecord";
@@ -45,6 +45,7 @@ export class Resource extends BaseResource
     public properties()
     {
         // Reverse properties as temporary fix of columns direction.
+        // TODO: remove .reverse() when "admin-bro" will be fixed.
         return Object.values(this.propsObject).reverse();
     }
 
@@ -110,24 +111,32 @@ export class Resource extends BaseResource
         return records;
     }
 
-    public async search(value: string, limit: number = 30): Promise<Array<ExtendedRecord>>
+    public async search(value: any, limit: number = 50): Promise<Array<ExtendedRecord>>
     {
         const meta = Reflect.getMetadata(SEARCH_FIELD_SYMBOL, this.model);
 
-        let key: string | null = null;
+        let kt: {key: string, type: PropertyType} | null = null;
         if(meta)
-            key = `${meta}`;
-        else if(this.property("name"))
-            key = "name";
-        else if(this.property("id"))
-            key = "id";
+        {
+            const key = `${meta}`;
+            const prop = this.property(key);
+            if(prop != null)
+                kt = {key, type: prop.type()};
+        }
+        else
+        {
+            const nameProp = this.property("name");
+            const idProp = this.property("id");
+            if(nameProp)
+                kt = {key: "name", type: nameProp.type()};
+            else if(idProp)
+                kt = {key: "id", type: idProp.type()};
+        }
 
-        if(key != null)
+        if(kt != null)
         {
             const instances = await this.model.find({
-                where: {
-                    [key]: value
-                },
+                where: {[kt.key]: kt.type == "string" ? Like(`%${value}%`) : value},
                 take: limit
             });
 
@@ -170,11 +179,15 @@ export class Resource extends BaseResource
     public async update(pk, params: any = {}): Promise<ParamsType>
     {
         params = this.prepareParamsBeforeSave(params);
-        await this.validate(await this.model.create(params));
-        await this.model.update(pk, params);
         const instance = await this.model.findOne(pk);
         if(instance)
+        {
+            for(const p in params)
+                instance[p] = params[p];
+            await this.validate(instance);
+            await instance.save();
             return instance;
+        }
 
         throw new Error("Instance not found.");
     }

@@ -1,9 +1,8 @@
 import { Resource } from "./Resource";
 import { Connection, BaseEntity } from "typeorm";
+import { BaseDatabase } from "admin-bro";
 
-const { BaseDatabase } = require("admin-bro");
-
-export class Database extends (BaseDatabase as any)
+export class Database extends BaseDatabase
 {
     public constructor(public readonly connection: Connection)
     {
