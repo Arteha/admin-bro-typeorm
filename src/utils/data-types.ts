@@ -1,7 +1,5 @@
 import { PropertyType } from "admin-bro";
 
-export type DataType = "string" | "number" | "float" | "datetime" | "date" | "array" | "object" | "boolean";
-
 const NUMBER = [
     // PrimaryGeneratedColumnType:
     "int", "int2", "int4", "int8", "integer", "tinyint", "smallint",
@@ -51,6 +49,7 @@ const BOOLEAN = [
 
 const OBJECT = [
     // SimpleColumnType:
+    "simple-array", "array",
     "simple-json", "json", "jsonb"
 ];
 

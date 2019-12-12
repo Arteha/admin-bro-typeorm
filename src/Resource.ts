@@ -1,10 +1,12 @@
+import "reflect-metadata";
 import { Property } from "./Property";
-import { BaseEntity, Repository, Connection } from "typeorm";
-
-import { convertFilter } from "./utils/convertFilter";
-
-import { BaseResource, ValidationError, Filter, BaseRecord } from "admin-bro";
+import { BaseEntity, Like } from "typeorm";
+import { BaseResource, ValidationError, Filter, PropertyType } from "admin-bro";
 import { ParamsType } from "admin-bro/types/src/backend/adapters/base-record";
+import { convertFilter } from "./utils/convertFilter";
+import { ExtendedRecord } from "./ExtendedRecord";
+import { getTitle } from "./utils/getTitle";
+import { SEARCH_FIELD_SYMBOL } from "./symbols/SEARCH_FIELD_SYMBOL";
 
 export class Resource extends BaseResource
 {
@@ -32,7 +34,7 @@ export class Resource extends BaseResource
 
     public name(): string
     {
-        return this.model.name;
+        return this.model.getRepository().metadata.tableName;
     }
 
     public id()
@@ -42,12 +44,14 @@ export class Resource extends BaseResource
 
     public properties()
     {
-        return [ ...Object.values(this.propsObject) ];
+        // Reverse properties as temporary fix of columns direction.
+        // TODO: remove .reverse() when "admin-bro" will be fixed.
+        return Object.values(this.propsObject).reverse();
     }
 
     public property(path: string): Property | null
     {
-        return this.propsObject[ path ] || null;
+        return this.propsObject[path] || null;
     }
 
     public async count(filter)
@@ -59,43 +63,103 @@ export class Resource extends BaseResource
 
     public async populate(baseRecords, property: Property)
     {
-        const fks: Array<any> = baseRecords.map(baseRecord => baseRecord.params[ property.name() ]);
+        const fks: Array<any> = baseRecords.map(baseRecord => baseRecord.params[property.name()]);
 
         const instances = await this.model.findByIds(fks);
         const instancesRecord: Record<string, BaseEntity> = {};
         for (const instance of instances)
         {
-            if (instance.hasId())
-                instancesRecord[ (instance as any).id ] = instance;
+            if(instance.hasId())
+                instancesRecord[(instance as any).id] = instance;
         }
 
-        baseRecords.forEach((baseRecord) =>
+        for (const baseRecord of baseRecords)
         {
-            const fk = baseRecord.params[ property.name() ];
-            const instance = instancesRecord[ fk ];
-            if (instance)
-                baseRecord.populated[ property.name() ] = new BaseRecord(instance, this);
-        });
+            const fk = baseRecord.params[property.name()];
+            const instance = instancesRecord[fk];
+            if(instance)
+            {
+                const record = new ExtendedRecord(instance, this);
+                record.setTitle(await getTitle(instance));
+                baseRecord.populated[property.name()] = record;
+            }
+        }
+
         return baseRecords;
     }
 
-    public async find(filter: Filter, { limit = 10, offset = 0, sort = {} })
+    public async find(filter: Filter, {limit = 10, offset = 0, sort = {}}): Promise<Array<ExtendedRecord>>
     {
-        const { direction, sortBy } = sort as any;
+        const {direction, sortBy} = sort as any;
         const instances = await this.model.find({
             where: convertFilter(filter),
             take: limit,
             skip: offset,
             order: {
-                [ sortBy ]: (direction || "asc").toUpperCase()
+                [sortBy]: (direction || "asc").toUpperCase()
             }
         });
-        return instances.map(instance => new BaseRecord(instance, this));
+
+        const records: Array<ExtendedRecord> = [];
+        for (const instance of instances)
+        {
+            const record = new ExtendedRecord(instance, this);
+            record.setTitle(await getTitle(instance));
+            records.push(record);
+        }
+
+        return records;
+    }
+
+    public async search(value: any, limit: number = 50): Promise<Array<ExtendedRecord>>
+    {
+        const meta = Reflect.getMetadata(SEARCH_FIELD_SYMBOL, this.model);
+
+        let kt: {key: string, type: PropertyType} | null = null;
+        if(meta)
+        {
+            const key = `${meta}`;
+            const prop = this.property(key);
+            if(prop != null)
+                kt = {key, type: prop.type()};
+        }
+        else
+        {
+            const nameProp = this.property("name");
+            const idProp = this.property("id");
+            if(nameProp)
+                kt = {key: "name", type: nameProp.type()};
+            else if(idProp)
+                kt = {key: "id", type: idProp.type()};
+        }
+
+        if(kt != null)
+        {
+            const instances = await this.model.find({
+                where: {[kt.key]: kt.type == "string" ? Like(`%${value}%`) : value},
+                take: limit
+            });
+
+            const records: Array<ExtendedRecord> = [];
+            for (const instance of instances)
+            {
+                const record = new ExtendedRecord(instance, this);
+                record.setTitle(await getTitle(instance));
+                records.push(record);
+            }
+
+            return records;
+        }
+
+        throw new Error("Search field not found.");
     }
 
     public async findOne(id)
     {
-        return new BaseRecord(await this.model.findOne(id), this);
+        const instance = await this.model.findOne(id);
+        const record = new ExtendedRecord(instance, this);
+        record.setTitle(await getTitle(instance));
+        return record;
     }
 
     public async findById(id)
@@ -105,24 +169,26 @@ export class Resource extends BaseResource
 
     public async create(params: any): Promise<ParamsType>
     {
-        const instance = await this.model.create(this.prepareParams(params));
+        const instance = await this.model.create(this.prepareParamsBeforeSave(params));
 
         await this.validateAndSave(instance);
-        
+
         return instance;
     }
 
     public async update(pk, params: any = {}): Promise<ParamsType>
     {
+        params = this.prepareParamsBeforeSave(params);
         const instance = await this.model.findOne(pk);
-        if (instance)
+        if(instance)
         {
-            params = this.prepareParams(params);
-            for (const p in params)
-                instance[ p ] = params[ p ];
-            await this.validateAndSave(instance);
+            for(const p in params)
+                instance[p] = params[p];
+            await this.validate(instance);
+            await instance.save();
             return instance;
         }
+
         throw new Error("Instance not found.");
     }
 
@@ -137,38 +203,38 @@ export class Resource extends BaseResource
         for (const col of columns)
         {
             const property = new Property(col);
-            this.propsObject[ property.path() ] = property;
+            this.propsObject[property.path()] = property;
         }
     }
 
-    private prepareParams(params: Object): Object
+    private prepareParamsBeforeSave(params: Object): Object
     {
-        for(const p in params)
+        for (const p in params)
         {
             const property = this.property(p);
-            if(property && property.type() === "mixed")
-                params[p] = JSON.parse(params[p]);
-            if(property && property.type() === "number" && params[p] && params[p].toString().length)
-                params[p] = +params[p];
-            if(property && property.type() === "reference" && params[p] && params[p].toString().length){
-                /**
-                 * references cannot be stored as an IDs in typeorm, so in order to mimic this) and
-                 * not fetching reference resource) change this:
-                 * { postId: "1" }
-                 * to that:
-                 * { post: { id: 1 } }
-                 */
-                params[property.column.propertyName] = { id: +params[p] };
+            if(property)
+            {
+                if(property.type() === "mixed")
+                    params[p] = JSON.parse(params[p]);
+                if(property.type() === "number" && params[p] && params[p].toString().length)
+                    params[p] = +params[p];
+                if(property.type() === "reference" && params[p] && params[p].toString().length)
+                {
+                    // references can be stored as an IDs in typeorm:
+                    params[property.column.propertyName] = +params[p];
+                }
             }
-
         }
         return params;
     }
 
-    private async validateAndSave(instance: BaseEntity) {
-        if (Resource.validate) {
+    private async validate(instance: BaseEntity)
+    {
+        if(Resource.validate)
+        {
             const errors = await Resource.validate(instance);
-            if (errors && errors.length) {
+            if(errors && errors.length)
+            {
                 const validationErrors = errors.reduce((memo, error) => ({
                     ...memo,
                     [error.property]: {
@@ -179,10 +245,20 @@ export class Resource extends BaseResource
                 throw new ValidationError(`${this.name()} validation failed`, validationErrors);
             }
         }
-        try {
+    }
+
+    private async validateAndSave(instance: BaseEntity)
+    {
+        await this.validate(instance);
+
+        try
+        {
             await instance.save();
-        } catch (error) {
-            if (error.name === "QueryFailedError") {
+        }
+        catch(error)
+        {
+            if(error.name === "QueryFailedError")
+            {
                 throw new ValidationError(`${this.name()} validation failed`, {
                     [error.column]: {
                         type: "schema error",
@@ -199,7 +275,7 @@ export class Resource extends BaseResource
         {
             return !!rawResource.getRepository().metadata;
         }
-        catch (e)
+        catch(e)
         {
             return false;
         }

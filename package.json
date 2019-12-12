@@ -1,6 +1,6 @@
 {
   "name": "admin-bro-typeorm",
-  "version": "0.1.5",
+  "version": "0.1.6-alpha.2",
   "description": "TypeORM adapter for AdminBro",
   "keywords": [
     "typeorm",
@@ -27,6 +27,7 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
+    "reflect-metadata": ">=0.1.13",
     "admin-bro": ">=1.4.0",
     "typeorm": ">=0.2.1"
   },
