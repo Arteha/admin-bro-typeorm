@@ -27,16 +27,16 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "reflect-metadata": ">=0.1.13",
     "admin-bro": ">=1.4.0",
-    "typeorm": ">=0.2.1"
+    "reflect-metadata": ">=0.1.13",
+    "typeorm": ">=0.2.21"
   },
   "optionalDependencies": {},
   "devDependencies": {
     "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "12.0.10",
-    "admin-bro": ">=1.4.0",
+    "admin-bro": "^1.4.2",
     "chai": "^4.2.0",
     "class-validator": "^0.11.0",
     "mocha": "^6.2.2",
