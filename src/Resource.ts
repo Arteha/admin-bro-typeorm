@@ -17,7 +17,7 @@ export class Resource extends BaseResource
         super(model);
 
         this.model = model;
-        this.prepareProps();
+        this.propsObject = this.prepareProps();
     }
 
     public databaseName(): string
@@ -144,11 +144,13 @@ export class Resource extends BaseResource
     private prepareProps()
     {
         const columns = this.model.getRepository().metadata.columns;
-        for (const col of columns)
-        {
-            const property = new Property(col);
-            this.propsObject[ property.path() ] = property;
-        }
+        return columns.reduce((memo, col, index) => {
+            const property = new Property(col, index);
+            return {
+                ...memo,
+                [property.path()]: property,
+            };
+        }, {});
     }
 
     private prepareParams(params: Object): Object

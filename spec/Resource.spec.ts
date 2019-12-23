@@ -63,6 +63,12 @@ describe("Resource", () => {
         it("returns all the properties", () => {
             expect(resource.properties()).to.have.lengthOf(9);
         });
+
+        it("returns all properties with the correct position", () => {
+            expect(resource.properties().map(property => property.position())).to.deep.equal([
+                0, 1, 2, 3, 4, 5, 6, 7, 8,
+            ]);
+        });
     });
 
     describe("#property", () => {

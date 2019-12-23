@@ -6,13 +6,16 @@ import { BaseProperty, PropertyType } from "admin-bro";
 export class Property extends BaseProperty
 {
     public column: ColumnMetadata;
+    
+    private columnPosition: number;
 
-    constructor(column: ColumnMetadata)
+    constructor(column: ColumnMetadata, columnPosition: number = 0)
     {   
         // for reference fields take database name (with ...Id)
         const path = column.referencedColumn ? column.databaseName : column.propertyPath;
         super({ path });
         this.column = column;
+        this.columnPosition = columnPosition;
     }
 
     public isEditable() {
@@ -41,6 +44,10 @@ export class Property extends BaseProperty
         if (values)
             return values.map(val => val.toString());
         return null;
+    }
+
+    public position() {
+        return this.columnPosition || 0;
     }
 
     public type(): PropertyType
