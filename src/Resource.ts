@@ -11,7 +11,7 @@ import { SEARCH_FIELD_SYMBOL } from "./symbols/SEARCH_FIELD_SYMBOL";
 export class Resource extends BaseResource
 {
     public static validate: any;
-    private model: typeof BaseEntity;
+    public model: typeof BaseEntity;
     private propsObject: Record<string, Property> = {};
 
     constructor(model: typeof BaseEntity)
@@ -46,7 +46,7 @@ export class Resource extends BaseResource
     {
         // Reverse properties as temporary fix of columns direction.
         // TODO: remove .reverse() when "admin-bro" will be fixed.
-        return Object.values(this.propsObject).reverse();
+        return Object.values(this.propsObject);
     }
 
     public property(path: string): Property | null
@@ -200,9 +200,9 @@ export class Resource extends BaseResource
     private prepareProps()
     {
         const columns = this.model.getRepository().metadata.columns;
-        for (const col of columns)
+        for (let i = 0; i < columns.length; i++)
         {
-            const property = new Property(col);
+            const property = new Property(columns[i], this, i);
             this.propsObject[property.path()] = property;
         }
     }

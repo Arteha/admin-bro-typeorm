@@ -11,6 +11,9 @@ export async function getTitle(instance: BaseEntity | null | undefined): Promise
             const prop = instance[meta];
             if(prop instanceof Function)
                 return `${await (prop.bind(instance))()}`;
+            else if(prop instanceof Promise)
+                return `${await prop}`;
+            return `${prop}`;
         }
         else
         {
