@@ -35,40 +35,7 @@ export class ExtendedRecord extends BaseRecord
         obj.title = this.title(); // sorry but, .toJSON() doesn't take title from .title()
         if(this._instance)
         {
-            // I Also patched "dots" to normal JSON. Because now we can edit json field like a string:
-            /*
-                {
-                    "params": {
-                    "id": 93,
-                    "name": "4",
-                    "carrierId": 1,
-                    "countryId": 5,
-                    "zeros": 3,
-                    "zipCodes.0": 9,
-                    "zipCodes.1": 12,
-                    "zipCodes.2": 19,
-                    "zipCodes.3": 22,
-                    "zipCodes.4": 24,
-                    "zipCodes.5.0": 33000,
-                    "zipCodes.5.1": 34999,
-                    "zipCodes.6.0": 39000,
-                    "zipCodes.6.1": 40999,
-                    "zipCodes.7": 42,
-                    "zipCodes.8": 44,
-                    "zipCodes.9": 47,
-                    "zipCodes.10": 49,
-                    "exceptions": [],
-                    "carrier.id": 1,
-                    "carrier.name": "leman",
-                    "carrier.oilRate": 1.336,
-                    "carrier.category": "all",
-                    "carrier.hasSpecialHandling": true,
-                    "country.id": 5,
-                    "country.name": "SPAIN"
-                    },
-                    ...
-               }
-            * */
+            // patched strange objects ({"key.deepKey": 123}) to normal JSON.
             obj.params = {};
             for (const n in this._instance)
             {

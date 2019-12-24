@@ -1,4 +1,4 @@
-import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual } from "typeorm";
+import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual, Like } from "typeorm";
 import { Filter } from "admin-bro";
 
 function safeParseJSON(json: string)
@@ -24,7 +24,13 @@ export function convertFilter(filter?: Filter): FindConditions<BaseEntity>
         for (const n in filters)
         {
             const one = filters[n];
-            if(["boolean", "number", "float", "mixed"].includes(one.property.type()))
+            if(["number", "float", "reference"].includes(one.property.type()))
+            {
+                const val = Number(one.value);
+                if(!isNaN(val))
+                    where[n] = val;
+            }
+            else if(["boolean", "mixed"].includes(one.property.type()))
                 where[n] = safeParseJSON(one.value);
             else if(["date", "datetime"].includes(one.property.type()))
             {
@@ -36,7 +42,7 @@ export function convertFilter(filter?: Filter): FindConditions<BaseEntity>
                     where[n] = LessThanOrEqual(new Date(one.value.to));
             }
             else
-                where[n] = one.value;
+                where[n] = Like(`%${one.value}%`);
         }
         return where;
     }

@@ -1,6 +1,6 @@
 {
   "name": "admin-bro-typeorm",
-  "version": "0.1.6-alpha.2",
+  "version": "0.1.6-alpha.3",
   "description": "TypeORM adapter for AdminBro",
   "keywords": [
     "typeorm",
@@ -27,8 +27,8 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "reflect-metadata": ">=0.1.13",
-    "admin-bro": ">=1.4.0",
+    "admin-bro": ">=1.6.0-beta.5",
+    "admin-bro-expressjs": ">=0.4.0",
     "typeorm": ">=0.2.1"
   },
   "optionalDependencies": {},
@@ -36,7 +36,8 @@
     "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "12.0.10",
-    "admin-bro": ">=1.4.0",
+    "admin-bro": "^1.6.0-beta.5",
+    "admin-bro-expressjs": "^0.4.0",
     "chai": "^4.2.0",
     "class-validator": "^0.11.0",
     "mocha": "^6.2.2",
@@ -46,5 +47,8 @@
     "tslint": "^5.20.0",
     "typeorm": "^0.2.1",
     "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
   }
 }
