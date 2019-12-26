@@ -83,10 +83,12 @@ export class Property extends BaseProperty
         {
             if (this.column.type == Number)
                 type = "number";
-            if (this.column.type == String)
+            else if (this.column.type == String)
                 type = "string";
-            if (this.column.type == Date)
+            else if (this.column.type == Date)
                 type = "datetime";
+            else if (this.column.type == Boolean)
+                type = "boolean";
         }
         else
             type = DATA_TYPES[ this.column.type as any ];
