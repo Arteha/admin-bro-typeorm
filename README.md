@@ -76,10 +76,11 @@ export class Person extends BaseEntity
     public lastName: string;
 
     @ManyToOne(type => Organization, org => org.employees)
+    @JoinColumn({ name: "organizationId" })
     public organization?: Organization;
 
     // in order be able to fetch resources in admin-bro - we have to have id available
-    @RelationId((person: Person) => person.organization)
+    @Column("int", { nullable: true })
     public organizationId: number | null;
     
     @UseAsTitle()
@@ -115,7 +116,7 @@ export class Person extends BaseEntity
 
 ## ManyToOne
 
-Admin supports ManyToOne relationship but you also have to define @RelationId as stated in the example above.
+Admin supports ManyToOne relationship but you also have to define @JoinColumn as stated in the example above.
 
 ## Warning
 

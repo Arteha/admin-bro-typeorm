@@ -1,11 +1,13 @@
 import { expect } from "chai";
-
-import { Resource } from "../src/Resource";
+import { Resource } from "../src";
 import { Car } from "./entities/Car";
 import { connect, close } from "./utils/testConnection";
 import { BaseProperty, BaseRecord, ValidationError } from "admin-bro";
 import { validate } from "class-validator";
 import { CarDealer } from "./entities/CarDealer";
+import { join } from "path";
+
+const ORMCONFIG = require(join(process.cwd(), "ormconfig.js"));
 
 describe("Resource", () => {
     let resource: Resource;
@@ -41,7 +43,7 @@ describe("Resource", () => {
 
     describe("#databaseName", () => {
         it("returns correct database name", () => {
-            expect(resource.databaseName()).to.equal(process.env.POSTGRES_DATABASE);
+            expect(resource.databaseName()).to.equal(ORMCONFIG.database);
         });
     });
 
@@ -53,7 +55,7 @@ describe("Resource", () => {
 
     describe("#name", () => {
         it("returns the name of the entity", () => {
-            expect(resource.name()).to.equal("Car");
+            expect(resource.name()).to.equal("Cars");
         });
     });
 
@@ -109,7 +111,7 @@ describe("Resource", () => {
                 });
             } catch (error) {
                 expect(error).to.be.instanceOf(ValidationError);
-                const errors = (error as ValidationError).errors;
+                const errors = (error as ValidationError).propertyErrors;
                 expect(Object.keys(errors)).to.have.lengthOf(2);
                 expect(errors["name"].type).to.equal("isDefined");
                 expect(errors["age"].type).to.equal("max");
@@ -125,7 +127,7 @@ describe("Resource", () => {
                 });
             } catch (error) {
                 expect(error).to.be.instanceOf(ValidationError);
-                const errors = (error as ValidationError).errors;
+                const errors = (error as ValidationError).propertyErrors;
                 expect(Object.keys(errors)[0]).to.equal("model");
                 expect(Object.keys(errors)).to.have.lengthOf(1);
                 expect(errors["model"].message).not.to.be.null;
