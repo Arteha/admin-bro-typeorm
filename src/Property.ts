@@ -27,7 +27,7 @@ export class Property extends BaseProperty
         return this.column.propertyName;
     }
 
-    isTitle(): boolean
+    public isTitle(): boolean
     {
         const name = this.name();
         const key = Reflect.getMetadata(SEARCH_FIELD_SYMBOL, this.resource.model);
