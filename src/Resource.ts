@@ -212,17 +212,16 @@ export class Resource extends BaseResource
         for (const p in params)
         {
             const property = this.property(p);
-            if(property)
+            if(property && params[p])
             {
-                if(property.type() === "mixed")
+                if(["mixed", "boolean"].includes(property.type()))
                     params[p] = JSON.parse(params[p]);
-                if(property.type() === "number" && params[p] && params[p].toString().length)
-                    params[p] = +params[p];
-                if(property.type() === "reference" && params[p] && params[p].toString().length)
-                {
-                    // references can be stored as an IDs in typeorm:
+                else if(["number", "float"].includes(property.type()))
+                    params[p] = Number(params[p]);
+                else if(["date", "datetime"].includes(property.type()))
+                    params[p] = new Date(params[p]);
+                else if(property.type() == "reference")
                     params[property.column.propertyName] = +params[p];
-                }
             }
         }
         return params;

@@ -101,11 +101,11 @@ export class Property extends BaseProperty
 
         type = type || "string";
 
-        if(type == "string" && Reflect.getMetadata(TEXTAREA_SYMBOL, this.resource.model, this.name()))
+        if(
+            ["string", "richtext"].includes(type) &&
+            Reflect.getMetadata(TEXTAREA_SYMBOL, this.resource.model, this.name())
+        )
             return "textarea";
-        // TODO: Uncomment this in future.
-        /*if(Reflect.getMetadata(TEXTAREA_SYMBOL, this.resource.model, this.name()))
-            return "textarea";*/
 
         return type;
     }
