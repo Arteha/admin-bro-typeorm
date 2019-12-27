@@ -44,8 +44,6 @@ export class Resource extends BaseResource
 
     public properties()
     {
-        // Reverse properties as temporary fix of columns direction.
-        // TODO: remove .reverse() when "admin-bro" will be fixed.
         return Object.values(this.propsObject);
     }
 
