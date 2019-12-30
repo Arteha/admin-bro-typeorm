@@ -109,7 +109,7 @@ export class Resource extends BaseResource
         return records;
     }
 
-    public async findMany(ids: Array<number>): Promise<Array<ExtendedRecord>>
+    public async findMany(ids: Array<string>): Promise<Array<ExtendedRecord>>
     {
         const instances = await this.model.find({ where: { id: In(ids) } });
         const records: Array<ExtendedRecord> = [];
