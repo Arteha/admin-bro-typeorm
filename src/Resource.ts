@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Property } from "./Property";
-import { BaseEntity, Like } from "typeorm";
+import { BaseEntity, In, Like } from "typeorm";
 import { BaseResource, ValidationError, Filter, PropertyType } from "admin-bro";
 import { ParamsType } from "admin-bro/types/src/backend/adapters/base-record";
 import { convertFilter } from "./utils/convertFilter";
@@ -108,6 +108,20 @@ export class Resource extends BaseResource
 
         return records;
     }
+
+    public async findMany(ids: Array<string>): Promise<Array<ExtendedRecord>>
+    {
+        const instances = await this.model.find({ where: { id: In(ids) } });
+        const records: Array<ExtendedRecord> = [];
+        for (const instance of instances)
+        {
+            const record = new ExtendedRecord(instance, this);
+            record.setTitle(await getTitle(instance));
+            records.push(record);
+        }
+
+        return records;
+  }
 
     public async search(value: any, limit: number = 50): Promise<Array<ExtendedRecord>>
     {
