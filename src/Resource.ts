@@ -210,16 +210,16 @@ export class Resource extends BaseResource
         for (const p in params)
         {
             const property = this.property(p);
-            if(property && params[p])
+            if(property)
             {
                 if(["mixed", "boolean"].includes(property.type()))
-                    params[p] = JSON.parse(params[p]);
+                    params[p] = !params[p] ? null : JSON.parse(params[p]);
                 else if(["number", "float"].includes(property.type()))
-                    params[p] = Number(params[p]);
+                    params[p] = !params[p] ? null : Number(params[p]);
                 else if(["date", "datetime"].includes(property.type()))
-                    params[p] = new Date(params[p]);
+                    params[p] = !params[p] ? null : new Date(params[p]);
                 else if(property.type() == "reference")
-                    params[property.column.propertyName] = +params[p];
+                    params[property.column.propertyName] = !params[p] ? null : +params[p];
             }
         }
         return params;
