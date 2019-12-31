@@ -9,15 +9,15 @@ const NUMBER = [
     "tinyint", "smallint", "mediumint", "int", "bigint",
 
     // SimpleColumnType:
-    "int2", "integer", "int4", "int8", "int64", "unsigned big int", "float4", "float8"
+    "int2", "integer", "int4", "int8", "int64", "unsigned big int", "float4", "float8",
+
+    // WithPrecisionColumnType:
+    "float", "double", "dec", "decimal", "fixed", "numeric", "real", "double precision", "number"
 ];
 
 const STRING = [
     // SpatialColumnType:
     "geometry", "geography",
-
-    // WithPrecisionColumnType:
-    "float", "double", "dec", "decimal", "fixed", "numeric", "real", "double precision", "number",
 
     // WithLengthColumnType:
     "character varying", "varying character", "char varying", "nvarchar", "national varchar", "character",
