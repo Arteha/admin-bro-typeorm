@@ -36,7 +36,7 @@ describe("Resource", () => {
             expect(Resource.isAdapterFor(Car)).to.equal(true);
         });
 
-        it("returns flalse for any other kind of resources", () => {
+        it("returns false for any other kind of resources", () => {
             expect(Resource.isAdapterFor({ "Car": true })).to.equal(false);
         });
     });
@@ -142,7 +142,7 @@ describe("Resource", () => {
     });
 
     describe("#update", () => {
-        let record: BaseRecord;
+        let record: BaseRecord | null;
 
         beforeEach(async () => {
             const params = await resource.create({
@@ -155,18 +155,18 @@ describe("Resource", () => {
 
         it("updates record name", async () => {
             const ford = "Ford";
-            await resource.update(record.id(), {
+            await resource.update(record && record.id(), {
                 name: ford
             });
-            const recordInDb = await resource.findOne(record.id());
+            const recordInDb = await resource.findOne(record && record.id());
 
-            expect(recordInDb.param("name")).to.equal(ford);
+            expect(recordInDb && recordInDb.param("name")).to.equal(ford);
         });
 
         it("throws error when wrong name is given", async () => {
             const age = 123131;
             try {
-                await resource.update(record.id(), { age });
+                await resource.update(record && record.id(), { age });
             } catch (error) {
                 expect(error).to.be.instanceOf(ValidationError);
             }
