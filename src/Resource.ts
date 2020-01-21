@@ -1,5 +1,5 @@
 import { Property } from "./Property";
-import { BaseEntity } from "typeorm";
+import { BaseEntity, In } from "typeorm";
 
 import { convertFilter } from "./utils/convertFilter";
 
@@ -96,6 +96,12 @@ export class Resource extends BaseResource
     public async findOne(id)
     {
         return new BaseRecord(await this.model.findOne(id), this);
+    }
+
+    public async findMany(ids: Array<string>): Promise<Array<BaseRecord>>
+    {
+        const instances = await this.model.find({ where: { id: In(ids) }});
+        return instances.map(instance => new BaseRecord(instance, this));
     }
 
     public async findById(id)
