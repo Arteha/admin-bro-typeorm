@@ -95,7 +95,11 @@ export class Resource extends BaseResource
 
     public async findOne(id)
     {
-        return new BaseRecord(await this.model.findOne(id), this);
+        const instance = await this.model.findOne(id);
+        if (!instance) {
+            return null;
+        }
+        return new BaseRecord(instance, this);
     }
 
     public async findMany(ids: Array<string>): Promise<Array<BaseRecord>>

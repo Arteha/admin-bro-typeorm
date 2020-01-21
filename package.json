@@ -28,7 +28,7 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=1.6.0-beta.5",
+    "admin-bro": ">=1.6.2",
     "typeorm": ">=0.2.1"
   },
   "optionalDependencies": {},
@@ -36,7 +36,7 @@
     "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "12.0.10",
-    "admin-bro": ">=1.6.0-beta.5",
+    "admin-bro": "^1.6.2",
     "chai": "^4.2.0",
     "class-validator": "^0.11.0",
     "mocha": "^6.2.2",
