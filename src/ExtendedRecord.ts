@@ -41,7 +41,7 @@ export class ExtendedRecord extends BaseRecord
             {
                 const value = this._instance[n];
                 const property = this.resource.property(n);
-                if(property)
+                if(property && typeof property.type === "function")
                 {
                     const type = property.type();
                     if(type == "mixed")
