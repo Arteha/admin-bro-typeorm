@@ -142,7 +142,7 @@ export class Resource extends BaseResource
             await this.model.delete(pk);
         } catch (error) {
             if (error.name === "QueryFailedError") {
-                throw new ValidationError(`${this.name()} validation failed`, {}, {
+                throw new ValidationError({}, {
                     type: "QueryFailedError",
                     message: error.message
                 });
@@ -198,14 +198,14 @@ export class Resource extends BaseResource
                         message: Object.values(error.constraints)[0],
                     }
                 }), {});
-                throw new ValidationError(`${this.name()} validation failed`, validationErrors);
+                throw new ValidationError(validationErrors);
             }
         }
         try {
             await instance.save();
         } catch (error) {
             if (error.name === "QueryFailedError") {
-                throw new ValidationError(`${this.name()} validation failed`, {
+                throw new ValidationError({
                     [error.column]: {
                         type: "QueryFailedError",
                         message: error.message

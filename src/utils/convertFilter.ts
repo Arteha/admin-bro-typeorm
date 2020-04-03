@@ -25,14 +25,14 @@ export function convertFilter(filter?: Filter): FindConditions<BaseEntity>
         {
             const one = filters[ n ];
             if ([ "boolean", "number", "float", "object", "array" ].includes(one.property.type()))
-                where[ n ] = safeParseJSON(one.value);
+                where[ n ] = safeParseJSON(one.value as string);
             else if ([ "date", "datetime" ].includes(one.property.type()))
             {
-                if (one.value.from && one.value.to)
+                if (typeof one.value !== "string" && one.value.from && one.value.to)
                     where[ n ] = Between(new Date(one.value.from), new Date(one.value.to));
-                else if (one.value.from)
+                else if (typeof one.value !== "string" && one.value.from)
                     where[ n ] = MoreThanOrEqual(new Date(one.value.from));
-                else if (one.value.to)
+                else if (typeof one.value !== "string" && one.value.to)
                     where[ n ] = LessThanOrEqual(new Date(one.value.to));
             }
             else
