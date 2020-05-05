@@ -1,6 +1,6 @@
 {
   "name": "admin-bro-typeorm",
-  "version": "0.1.6-alpha.8",
+  "version": "0.1.6-alpha.9",
   "description": "TypeORM adapter for AdminBro",
   "keywords": [
     "typeorm",

@@ -41,7 +41,8 @@ export class ExtendedRecord extends BaseRecord
             {
                 const value = this._instance[n];
                 const property = this.resource.property(n);
-                if(property)
+                // TODO: why property sometimes is not instanceof class Property?
+                if(property && typeof property.type == "function")
                 {
                     const type = property.type();
                     if(type == "mixed")
