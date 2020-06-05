@@ -253,7 +253,7 @@ export class Resource extends BaseResource
                         message: Object.values(error.constraints)[0],
                     }
                 }), {});
-                throw new ValidationError(`${this.name()} validation failed`, validationErrors);
+                throw new ValidationError(validationErrors);
             }
         }
     }
@@ -270,7 +270,7 @@ export class Resource extends BaseResource
         {
             if(error.name === "QueryFailedError")
             {
-                throw new ValidationError(`${this.name()} validation failed`, {
+                throw new ValidationError({
                     [error.column]: {
                         type: "schema error",
                         message: error.message
