@@ -25,6 +25,11 @@
     "type": "git",
     "url": "git+https://github.com/Arteha/admin-bro-typeorm.git"
   },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
