@@ -1,10 +1,10 @@
-import { Property } from "./Property";
 import { BaseEntity, In } from "typeorm";
+import { BaseResource, ValidationError, Filter, BaseRecord } from "@admin-bro/core";
 
+import { Property } from "./Property";
 import { convertFilter } from "./utils/convertFilter";
 
-import { BaseResource, ValidationError, Filter, BaseRecord } from "admin-bro";
-import { ParamsType } from "admin-bro/types/src/backend/adapters/base-record";
+type ParamsType = Record<string, any>;
 
 export class Resource extends BaseResource
 {

@@ -1,7 +1,7 @@
 import { Resource } from "./Resource";
 import { Connection, BaseEntity } from "typeorm";
 
-import { BaseDatabase } from "admin-bro";
+import { BaseDatabase } from "@admin-bro/core";
 
 export class Database extends BaseDatabase
 {

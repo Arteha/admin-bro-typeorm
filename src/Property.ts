@@ -1,7 +1,7 @@
 import { ColumnMetadata } from "typeorm/metadata/ColumnMetadata";
 import { DATA_TYPES } from "./utils/data-types";
 
-import { BaseProperty, PropertyType } from "admin-bro";
+import { BaseProperty, PropertyType } from "@admin-bro/core";
 
 export class Property extends BaseProperty
 {

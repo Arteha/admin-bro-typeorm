@@ -1,4 +1,4 @@
-import { PropertyType } from "admin-bro";
+import { PropertyType } from "@admin-bro/core";
 
 export type DataType = "string" | "number" | "float" | "datetime" | "date" | "array" | "object" | "boolean";
 

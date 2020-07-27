@@ -1,16 +1,16 @@
 ## admin-bro-typeorm
 
-This is an inofficial [admin-bro](https://github.com/SoftwareBrothers/admin-bro) adapter which integrates [TypeORM](https://typeorm.io/) into admin-bro.
+This is an official [admin-bro](https://github.com/SoftwareBrothers/admin-bro) adapter which integrates [TypeORM](https://typeorm.io/) into admin-bro. (originally forked from [Arteha/admin-bro-typeorm](https://github.com/Arteha/admin-bro-typeorm))
 
-Installation: `npm install admin-bro-typeorm`
+Installation: `npm install @admin-bro/typeorm`
 
 ## Usage
 
 The plugin can be registered using standard `AdminBro.registerAdapter` method.
 
 ```typescript
-import { Database, Resource } from "admin-bro-typeorm";
-import AdminBro from 'admin-bro'
+import { Database, Resource } from "@admin-bro/typeorm";
+import AdminBro from '@admin-bro/core'
 
 AdminBro.registerAdapter({ Database, Resource });
 
@@ -30,11 +30,11 @@ import {
     RelationId
 } from "typeorm";
 import * as express from "express";
-import { Database, Resource } from "admin-bro-typeorm";
+import { Database, Resource } from "@admin-bro/typeorm";
 import { validate } from 'class-validator'
 
-import AdminBro from "admin-bro";
-import * as AdminBroExpress from "admin-bro-expressjs"
+import AdminBro from "@admin-bro/core";
+import * as AdminBroExpress from "@admin-bro/express"
 
 Resource.validate = validate;
 AdminBro.registerAdapter({ Database, Resource });
@@ -90,7 +90,3 @@ export class Person extends BaseEntity
 ## ManyToOne
 
 Admin supports ManyToOne relationship but you also have to define @RealationId as stated in the example above.
-
-## Warning
-
-Typescript developers who want to use admin-bro of version `~1.3.0` - don't do this - use `~1.4.0` instead.

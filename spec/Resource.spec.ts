@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { BaseProperty, BaseRecord, ValidationError } from "admin-bro";
+import { BaseProperty, BaseRecord, ValidationError } from "@admin-bro/core";
 import { validate } from "class-validator";
 
 import { Car } from "./entities/Car";
@@ -43,7 +43,9 @@ describe("Resource", () => {
 
     describe("#databaseName", () => {
         it("returns correct database name", () => {
-            expect(resource.databaseName()).to.equal(process.env.POSTGRES_DATABASE);
+            expect(resource.databaseName()).to.equal(
+                process.env.POSTGRES_DATABASE || "database_test"
+            );
         });
     });
 
