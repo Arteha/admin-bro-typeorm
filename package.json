@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Arteha/admin-bro-typeorm.git"
+    "url": "git+https://github.com/SoftwareBrothers/admin-bro-typeorm.git"
   },
   "husky": {
     "hooks": {
