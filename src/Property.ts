@@ -25,6 +25,10 @@ export class Property extends BaseProperty {
     return this.column.isPrimary
   }
 
+  public isSortable(): boolean {
+    return this.type() !== 'reference'
+  }
+
   public reference(): string | null {
     const ref = this.column.referencedColumn
     if (ref) return ref.entityMetadata.name
