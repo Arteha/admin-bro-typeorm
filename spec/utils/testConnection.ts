@@ -1,14 +1,17 @@
-import "reflect-metadata";
-import {createConnection, Connection} from "typeorm";
+/* eslint-disable no-unused-expressions */
+// eslint-disable-next-line import/no-extraneous-dependencies
+import 'reflect-metadata'
+import { createConnection, Connection } from 'typeorm'
 
-let connection: Connection;
+// eslint-disable-next-line import/no-mutable-exports
+let connection: Connection
 
-export async function connect () {
-    connection = await createConnection();
+export async function connect(): Promise<void> {
+  connection = await createConnection()
 }
 
-export function close () {
-    connection && connection.close();
+export function close(): void {
+  connection && connection.close()
 }
 
-export { connection };
+export { connection }
