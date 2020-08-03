@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
       "outDir": "./build",
-      "target": "es2017",
+      "target": "es6",
       "esModuleInterop": true,
       "jsx": "react",
       "strictNullChecks": true,
-      "strictPropertyInitialization": true,
       "strictFunctionTypes": true,
       "strictBindCallApply": true,
       "noImplicitThis": true,
       "moduleResolution": "node",
       "module": "commonjs",
-      "types": ["cypress"]
+      "types": ["cypress"],
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "strictPropertyInitialization": false
   },
   "include": [
       "./src/**/*",
