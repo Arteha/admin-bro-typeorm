@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+      "baseUrl": ".",
       "outDir": "./build",
       "target": "es6",
       "esModuleInterop": true,
@@ -13,7 +14,12 @@
       "types": ["cypress"],
       "emitDecoratorMetadata": true,
       "experimentalDecorators": true,
-      "strictPropertyInitialization": false
+      "strictPropertyInitialization": false,
+      "sourceMap": true,
+      "paths": {
+        "react": ["node_modules/@types/react"],
+        "@admin-bro/core": ["node_modules/@admin-bro/core"],
+      }
   },
   "include": [
       "./src/**/*",
