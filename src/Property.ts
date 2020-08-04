@@ -1,5 +1,5 @@
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata'
-import { BaseProperty, PropertyType } from '@admin-bro/core'
+import { BaseProperty, PropertyType } from 'admin-bro'
 import { DATA_TYPES } from './utils/data-types'
 
 export class Property extends BaseProperty {

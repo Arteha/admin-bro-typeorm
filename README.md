@@ -2,7 +2,7 @@
 
 This is an official [admin-bro](https://github.com/SoftwareBrothers/admin-bro) adapter which integrates [TypeORM](https://typeorm.io/) into admin-bro. (originally forked from [Arteha/admin-bro-typeorm](https://github.com/Arteha/admin-bro-typeorm))
 
-Installation: `npm install @admin-bro/typeorm`
+Installation: `yarn add @admin-bro/typeorm`
 
 ## Usage
 
@@ -10,7 +10,7 @@ The plugin can be registered using standard `AdminBro.registerAdapter` method.
 
 ```typescript
 import { Database, Resource } from "@admin-bro/typeorm";
-import AdminBro from '@admin-bro/core'
+import AdminBro from 'admin-bro'
 
 AdminBro.registerAdapter({ Database, Resource });
 
@@ -28,13 +28,13 @@ import {
     createConnection,
     ManyToOne,
     RelationId
-} from "typeorm";
-import * as express from "express";
-import { Database, Resource } from "@admin-bro/typeorm";
+} from 'typeorm';
+import * as express from 'express';
+import { Database, Resource } from '@admin-bro/typeorm';
 import { validate } from 'class-validator'
 
-import AdminBro from "@admin-bro/core";
-import * as AdminBroExpress from "@admin-bro/express"
+import AdminBro from 'admin-bro';
+import * as AdminBroExpress from '@admin-bro/express'
 
 Resource.validate = validate;
 AdminBro.registerAdapter({ Database, Resource });
@@ -75,7 +75,7 @@ export class Person extends BaseEntity
     const adminBro = new AdminBro({
         // databases: [connection],
         resources: [
-            { resource: Person, options: { parent: { name: "foobar" } } }
+            { resource: Person, options: { parent: { name: 'foobar' } } }
         ], 
         rootPath: '/admin',
     });

@@ -18,7 +18,7 @@
       "sourceMap": true,
       "paths": {
         "react": ["node_modules/@types/react"],
-        "@admin-bro/core": ["node_modules/@admin-bro/core"],
+        "admin-bro": ["node_modules/admin-bro"],
       }
   },
   "include": [

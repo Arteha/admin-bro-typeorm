@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { BaseEntity, In } from 'typeorm'
-import { BaseResource, ValidationError, Filter, BaseRecord } from '@admin-bro/core'
+import { BaseResource, ValidationError, Filter, BaseRecord } from 'admin-bro'
 
 import { Property } from './Property'
 import { convertFilter } from './utils/convertFilter'
@@ -157,13 +157,11 @@ export class Resource extends BaseResource {
       if (property && property.type() === 'mixed') { params[p] = JSON.parse(params[p]) }
       if (property && property.type() === 'number' && params[p] && params[p].toString().length) { params[p] = +params[p] }
       if (property && property.type() === 'reference' && params[p] && params[p].toString().length) {
-        /**
-         * references cannot be stored as an IDs in typeorm, so in order to mimic this) and
-         * not fetching reference resource) change this:
-         * { postId: "1" }
-         * to that:
-         * { post: { id: 1 } }
-         */
+        // references cannot be stored as an IDs in typeorm, so in order to mimic this) and
+        // not fetching reference resource) change this:
+        // { postId: "1" }
+        // to that:
+        // { post: { id: 1 } }
         params[property.column.propertyName] = { id: +params[p] }
       }
     }

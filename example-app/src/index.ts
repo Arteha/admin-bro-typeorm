@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { createConnection } from 'typeorm'
 import express from 'express'
-import AdminBro from '@admin-bro/core'
+import AdminBro from 'admin-bro'
 import { buildRouter } from '@admin-bro/express'
 import * as TypeormAdapter from '@admin-bro/typeorm'
 import { User } from './entity/User'
