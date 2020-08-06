@@ -25,6 +25,11 @@ export function convertFilter(filter?: Filter): FindConditions<BaseEntity> {
       else if (typeof one.value !== 'string' && one.value.to) where[n] = LessThanOrEqual(new Date(one.value.to))
     } else if ((one.property as Property).column.type === 'enum') {
       where[n] = one.value
+    } else if ((one.property as Property).type() === 'reference') {
+      const [column, key] = (one.property as Property).column.propertyPath.split('.')
+      where[column] = {
+        [key]: one.value,
+      }
     } else {
       where[n] = Like(`%${one.value}%`)
     }

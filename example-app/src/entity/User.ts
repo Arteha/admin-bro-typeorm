@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
+import { Car } from './Car'
 
 export enum UserRoles {
   DESIGNER = 'designer',
@@ -23,5 +24,8 @@ export class User extends BaseEntity {
     type: 'enum',
     enum: UserRoles,
   })
-  public role: UserRoles;
+  role: UserRoles;
+
+  @OneToMany((type) => Car, (car) => car.owner)
+  cars: Array<Car>
 }
