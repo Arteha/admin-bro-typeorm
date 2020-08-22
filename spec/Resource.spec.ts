@@ -14,7 +14,7 @@ describe('Resource', () => {
     model: 'Tucson',
     name: 'Hyundai',
     streetNumber: 'something',
-    age: 4,
+    age: '4',
   }
 
   before(async () => {
@@ -121,7 +121,7 @@ describe('Resource', () => {
       try {
         await resource.create({
           model: 'Tucson',
-          age: 200,
+          age: 'abc',
         })
       } catch (error) {
         expect(error).to.be.instanceOf(ValidationError)

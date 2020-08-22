@@ -49,4 +49,5 @@ export class Car extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt: Date;
+  
 }

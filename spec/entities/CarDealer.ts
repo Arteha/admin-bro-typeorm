@@ -4,8 +4,8 @@ import { Car } from './Car'
 
 @Entity()
 export class CarDealer extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  public id: number;
+  @PrimaryGeneratedColumn('uuid')
+  public id: string;
 
   @Column()
   @IsDefined()
