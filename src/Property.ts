@@ -46,17 +46,18 @@ export class Property extends BaseProperty {
   }
 
   public type(): PropertyType {
-    let type: PropertyType | null = null
+    let type: PropertyType = DATA_TYPES[this.column.type as any] 
+
     if (typeof this.column.type === 'function') {
       if (this.column.type === Number) { type = 'number' }
       if (this.column.type === String) { type = 'string' }
       if (this.column.type === Date) { type = 'datetime' }
-    } else { type = DATA_TYPES[this.column.type as any] }
+    }
 
-    if (this.reference()) { return 'reference' }
+    if (this.reference()) { type = 'reference' }
 
     if (!type) { console.warn(`Unhandled type: ${this.column.type}`) }
 
-    return type || 'string'
+    return type;
   }
 }

@@ -21,7 +21,7 @@ describe('Database', () => {
 
   describe('#resources', () => {
     it('returns all entities', async () => {
-      expect(new Database(connection).resources()).to.have.lengthOf(2)
+      expect(new Database(connection).resources()).to.have.lengthOf(3)
     })
   })
 })
