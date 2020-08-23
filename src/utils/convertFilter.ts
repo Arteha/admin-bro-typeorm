@@ -1,4 +1,4 @@
-import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual, Like, Equal } from 'typeorm'
+import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual, Like } from 'typeorm'
 import { Filter } from 'admin-bro'
 import { Property } from '../Property'
 

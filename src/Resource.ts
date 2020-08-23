@@ -152,24 +152,24 @@ export class Resource extends BaseResource {
 
   /** Converts params from string to final type */
   private prepareParams(params: Record<string, any>): Record<string, any> {
-    const preparedParams: Record<string, any> = { ...params };
+    const preparedParams: Record<string, any> = { ...params }
 
     for (const key in params) {
-      const param = params[key];
-      const property = this.property(key);
+      const param = params[key]
+      const property = this.property(key)
 
-      if (!(property && param)) continue;
+      // eslint-disable-next-line no-continue
+      if (!(property && param)) continue
 
-      const type = property.type();
-      
-      if (type === 'mixed') { 
-        preparedParams[key] = JSON.parse(param) 
+      const type = property.type()
+
+      if (type === 'mixed') {
+        preparedParams[key] = JSON.parse(param)
       }
-      
+
       if (type === 'number') {
-        preparedParams[key] = Number(param);
+        preparedParams[key] = Number(param)
       }
-
 
       if (type === 'reference') {
         // references cannot be stored as an IDs in typeorm, so in order to mimic this) and
@@ -178,11 +178,11 @@ export class Resource extends BaseResource {
         // to that:
         // { post: { id: 1 } }
 
-        const id = (property.column.type === Number) ? Number(param) : param;
+        const id = (property.column.type === Number) ? Number(param) : param
         preparedParams[property.column.propertyName] = { id }
       }
     }
-    return preparedParams;
+    return preparedParams
   }
 
   // eslint-disable-next-line class-methods-use-this

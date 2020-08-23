@@ -4,7 +4,7 @@ import {
 } from 'typeorm'
 import { IsDefined, Min, Max } from 'class-validator'
 import { CarDealer } from './CarDealer'
-import { CarBuyer } from './CarBuyer';
+import { CarBuyer } from './CarBuyer'
 
 export enum CarType {
   MODERN = 'modern',
@@ -61,5 +61,4 @@ export class Car extends BaseEntity {
 
   @UpdateDateColumn({ name: 'updated_at' })
   public updatedAt: Date;
-  
 }

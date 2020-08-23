@@ -46,7 +46,7 @@ export class Property extends BaseProperty {
   }
 
   public type(): PropertyType {
-    let type: PropertyType = DATA_TYPES[this.column.type as any] 
+    let type: PropertyType = DATA_TYPES[this.column.type as any]
 
     if (typeof this.column.type === 'function') {
       if (this.column.type === Number) { type = 'number' }
@@ -58,6 +58,6 @@ export class Property extends BaseProperty {
 
     if (!type) { console.warn(`Unhandled type: ${this.column.type}`) }
 
-    return type;
+    return type
   }
 }

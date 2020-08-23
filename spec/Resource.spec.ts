@@ -71,7 +71,7 @@ describe('Resource', () => {
 
     it('returns all properties with the correct position', () => {
       expect(resource.properties().map((property) => property.position())).to.deep.equal([
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
       ])
     })
   })
@@ -126,7 +126,6 @@ describe('Resource', () => {
       expect(storedRecord.stringAge).to.equal(4)
     })
 
-
     it('throws ValidationError for defined validations', async () => {
       Resource.validate = validate
       try {
@@ -151,7 +150,7 @@ describe('Resource', () => {
         await resource.create({
           name: 'Tucson',
           age: 10,
-          stringage: '10'
+          stringAge: '10',
         })
       } catch (error) {
         expect(error).to.be.instanceOf(ValidationError)
@@ -173,7 +172,7 @@ describe('Resource', () => {
         model: 'Tucson',
         name: 'Hyundai',
         age: 4,
-        stringAge: '4'
+        stringAge: '4',
       })
       record = await resource.findOne(params.id)
     })
@@ -227,7 +226,6 @@ describe('Resource', () => {
 
       expect(carParams.carBuyerId).to.equal(carBuyer.id)
     })
-
   })
 
   describe('#delete', () => {
