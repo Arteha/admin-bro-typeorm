@@ -170,7 +170,14 @@ export class Resource extends BaseResource {
         preparedParams[key] = Number(param);
       }
 
+
       if (type === 'reference') {
+        // references cannot be stored as an IDs in typeorm, so in order to mimic this) and
+        // not fetching reference resource) change this:
+        // { postId: "1" }
+        // to that:
+        // { post: { id: 1 } }
+
         const id = (property.column.type === Number) ? Number(param) : param;
         preparedParams[property.column.propertyName] = { id }
       }

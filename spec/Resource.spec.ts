@@ -7,6 +7,7 @@ import { CarDealer } from './entities/CarDealer'
 import { connect, close } from './utils/testConnection'
 
 import { Resource } from '../src/Resource'
+import { CarBuyer } from './entities/CarBuyer'
 
 describe('Resource', () => {
   let resource: Resource
@@ -14,7 +15,8 @@ describe('Resource', () => {
     model: 'Tucson',
     name: 'Hyundai',
     streetNumber: 'something',
-    age: '4',
+    age: 4,
+    stringAge: '4',
   }
 
   before(async () => {
@@ -25,6 +27,7 @@ describe('Resource', () => {
     resource = new Resource(Car)
     await Car.delete({})
     await CarDealer.delete({})
+    await CarBuyer.delete({})
   })
 
   after(async () => {
@@ -63,12 +66,12 @@ describe('Resource', () => {
 
   describe('#properties', () => {
     it('returns all the properties', () => {
-      expect(resource.properties()).to.have.lengthOf(9)
+      expect(resource.properties()).to.have.lengthOf(11)
     })
 
     it('returns all properties with the correct position', () => {
       expect(resource.properties().map((property) => property.position())).to.deep.equal([
-        0, 1, 2, 3, 4, 5, 6, 7, 8,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
       ])
     })
   })
@@ -116,19 +119,29 @@ describe('Resource', () => {
       expect(storedRecord.streetNumber).to.equal(data.streetNumber)
     })
 
+    it('stores number Column with property as string', async () => {
+      const params = await resource.create(data)
+      const storedRecord = await Car.findOne(params.id) as Car
+
+      expect(storedRecord.stringAge).to.equal(4)
+    })
+
+
     it('throws ValidationError for defined validations', async () => {
       Resource.validate = validate
       try {
         await resource.create({
           model: 'Tucson',
-          age: 'abc',
+          age: 200,
+          stringAge: 'abc',
         })
       } catch (error) {
         expect(error).to.be.instanceOf(ValidationError)
         const errors = (error as ValidationError).propertyErrors
-        expect(Object.keys(errors)).to.have.lengthOf(2)
+        expect(Object.keys(errors)).to.have.lengthOf(3)
         expect(errors.name.type).to.equal('isDefined')
         expect(errors.age.type).to.equal('max')
+        expect(errors.stringAge.type).to.equal('max')
       }
       Resource.validate = undefined
     })
@@ -138,6 +151,7 @@ describe('Resource', () => {
         await resource.create({
           name: 'Tucson',
           age: 10,
+          stringage: '10'
         })
       } catch (error) {
         expect(error).to.be.instanceOf(ValidationError)
@@ -159,6 +173,7 @@ describe('Resource', () => {
         model: 'Tucson',
         name: 'Hyundai',
         age: 4,
+        stringAge: '4'
       })
       record = await resource.findOne(params.id)
     })
@@ -185,10 +200,14 @@ describe('Resource', () => {
 
   describe('references', () => {
     let carDealer: CarDealer
+    let carBuyer: CarBuyer
     let carParams
     beforeEach(async () => {
       carDealer = CarDealer.create({ name: 'dealPimp' })
       await carDealer.save()
+
+      carBuyer = CarBuyer.create({ name: 'johnDoe' })
+      await carBuyer.save()
     })
 
     it('creates new resource', async () => {
@@ -199,6 +218,16 @@ describe('Resource', () => {
 
       expect(carParams.carDealerId).to.equal(carDealer.id)
     })
+
+    it('creates new resource with uuid', async () => {
+      carParams = await resource.create({
+        ...data,
+        carBuyerId: carBuyer.id,
+      })
+
+      expect(carParams.carBuyerId).to.equal(carBuyer.id)
+    })
+
   })
 
   describe('#delete', () => {
