@@ -3,8 +3,8 @@ import { IsDefined } from 'class-validator'
 import { Car } from './Car'
 
 @Entity()
-export class CarDealer extends BaseEntity {
-  @PrimaryGeneratedColumn()
+export class CarBuyer extends BaseEntity {
+  @PrimaryGeneratedColumn('uuid')
   public id: string;
 
   @Column()
