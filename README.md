@@ -90,3 +90,54 @@ export class Person extends BaseEntity
 ## ManyToOne
 
 Admin supports ManyToOne relationship but you also have to define @RealationId as stated in the example above.
+
+## Contribution
+
+### Running the example app
+
+If you want to set this up locally this is the suggested process:
+
+1. fork the repo
+2. Install dependencies
+
+```
+yarn install
+```
+
+3. register this package as a (linked package)[https://classic.yarnpkg.com/en/docs/cli/link/]
+
+```
+yarn link
+```
+
+4. Setup example app
+
+Install all dependencies and use previously linked version of `@admin-bro/typeorm`.
+
+```
+cd example-app
+yarn install
+yarn link @admin-bro/typeorm
+```
+
+Optionally you might want to link your local version of `admin-bro` package
+
+5. Make sure you have all the envs set (which are defined in `example-app/ormconfig.js`)
+
+6. run the app in the dev mode
+
+```
+yarn start:dev
+```
+
+### Pull request
+
+Before you make a PR make sure all tests pass and your code wont causes linter errors.
+You can do this by running:
+
+```
+yarn lint
+yarn test
+```
+
+or with proper envs: `POSTGRES_USER=yourtestuser POSTGRES_DATABASE="database_test" yarn test`
