@@ -1,5 +1,5 @@
 name: CI/CD
-on: [push, pull_request_target]
+on: [push, pull_request]
 jobs:
   setup:
     name: setup
