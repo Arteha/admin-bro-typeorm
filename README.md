@@ -7,16 +7,16 @@ Installation: `yarn add @admin-bro/typeorm`
 ## Usage
 
 The plugin can be registered using standard `AdminBro.registerAdapter` method.
-
+o
 ```typescript
-import { Database, Resource } from "@admin-bro/typeorm";
+import { Database, Resource } from '@admin-bro/typeorm'
 import AdminBro from 'admin-bro'
 
 AdminBro.registerAdapter({ Database, Resource });
 
 // optional: if you use class-validator you have to inject this to resource.
 import { validate } from 'class-validator'
-Resource.validate = validate;
+Resource.validate = validate
 ```
 
 ## Example
@@ -28,16 +28,16 @@ import {
     createConnection,
     ManyToOne,
     RelationId
-} from 'typeorm';
-import * as express from 'express';
-import { Database, Resource } from '@admin-bro/typeorm';
+} from 'typeorm'
+import * as express from 'express'
+import { Database, Resource } from '@admin-bro/typeorm'
 import { validate } from 'class-validator'
 
-import AdminBro from 'admin-bro';
+import AdminBro from 'admin-bro'
 import * as AdminBroExpress from '@admin-bro/express'
 
-Resource.validate = validate;
-AdminBro.registerAdapter({ Database, Resource });
+Resource.validate = validate
+AdminBro.registerAdapter({ Database, Resource })
 
 @Entity()
 export class Person extends BaseEntity
@@ -67,10 +67,10 @@ export class Person extends BaseEntity
 
 ( async () =>
 {
-    const connection = await createConnection({/* ... */});
+    const connection = await createConnection({/* ... */})
     
     // Applying connection to model
-    Person.useConnection(connection);
+    Person.useConnection(connection)
     
     const adminBro = new AdminBro({
         // databases: [connection],
@@ -78,13 +78,13 @@ export class Person extends BaseEntity
             { resource: Person, options: { parent: { name: 'foobar' } } }
         ], 
         rootPath: '/admin',
-    });
+    })
     
-    const app = express();
-    const router = AdminBroExpress.buildRouter(adminBro);
-    app.use(adminBro.options.rootPath, router);
-    app.listen(3000);
-})();
+    const app = express()
+    const router = AdminBroExpress.buildRouter(adminBro)
+    app.use(adminBro.options.rootPath, router)
+    app.listen(3000)
+})()
 ```
 
 ## ManyToOne
@@ -124,9 +124,18 @@ Optionally you might want to link your local version of `admin-bro` package
 
 5. Make sure you have all the envs set (which are defined in `example-app/ormconfig.js`)
 
+6. Build the package in watch mode
+
+(in the root folder)
+
+```
+yarn watch
+```
+
 6. run the app in the dev mode
 
 ```
+cd example-app
 yarn start:dev
 ```
 
