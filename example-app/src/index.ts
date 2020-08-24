@@ -6,6 +6,7 @@ import { buildRouter } from '@admin-bro/express'
 import * as TypeormAdapter from '@admin-bro/typeorm'
 import { User } from './entity/User'
 import { Car } from './entity/Car'
+import { Seller } from './entity/Seller'
 
 AdminBro.registerAdapter(TypeormAdapter)
 
@@ -24,7 +25,7 @@ const run = async () => {
           },
         },
       },
-    }, Car],
+    }, Car, Seller],
   })
   const router = buildRouter(admin)
 

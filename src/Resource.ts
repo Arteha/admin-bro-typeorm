@@ -41,8 +41,8 @@ export class Resource extends BaseResource {
     return [...Object.values(this.propsObject)]
   }
 
-  public property(path: string): Property | null {
-    return this.propsObject[path] || null
+  public property(path: string): Property {
+    return this.propsObject[path]
   }
 
   public async count(filter: Filter): Promise<number> {
@@ -150,22 +150,39 @@ export class Resource extends BaseResource {
     }, {})
   }
 
+  /** Converts params from string to final type */
   private prepareParams(params: Record<string, any>): Record<string, any> {
-    // eslint-disable-next-line guard-for-in, no-restricted-syntax
-    for (const p in params) {
-      const property = this.property(p)
-      if (property && property.type() === 'mixed') { params[p] = JSON.parse(params[p]) }
-      if (property && property.type() === 'number' && params[p] && params[p].toString().length) { params[p] = +params[p] }
-      if (property && property.type() === 'reference' && params[p] && params[p].toString().length) {
+    const preparedParams: Record<string, any> = { ...params }
+
+    for (const key in params) {
+      const param = params[key]
+      const property = this.property(key)
+
+      // eslint-disable-next-line no-continue
+      if (!(property && param)) continue
+
+      const type = property.type()
+
+      if (type === 'mixed') {
+        preparedParams[key] = JSON.parse(param)
+      }
+
+      if (type === 'number') {
+        preparedParams[key] = Number(param)
+      }
+
+      if (type === 'reference') {
         // references cannot be stored as an IDs in typeorm, so in order to mimic this) and
         // not fetching reference resource) change this:
         // { postId: "1" }
         // to that:
         // { post: { id: 1 } }
-        params[property.column.propertyName] = { id: +params[p] }
+
+        const id = (property.column.type === Number) ? Number(param) : param
+        preparedParams[property.column.propertyName] = { id }
       }
     }
-    return params
+    return preparedParams
   }
 
   // eslint-disable-next-line class-methods-use-this

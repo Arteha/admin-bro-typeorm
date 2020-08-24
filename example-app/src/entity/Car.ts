@@ -1,5 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, RelationId, ManyToOne } from 'typeorm'
 import { User } from './User'
+import { Seller } from './Seller'
 
 @Entity()
 export class Car extends BaseEntity {
@@ -12,7 +13,13 @@ export class Car extends BaseEntity {
   @ManyToOne((type) => User, (user) => user.cars)
   owner: User;
 
+  @ManyToOne((type) => Seller, (seller) => seller.cars)
+  seller: User;
+
   // in order be able to fetch resources in admin-bro - we have to have id available
   @RelationId((car: Car) => car.owner)
   ownerId: number;
+
+  @RelationId((car: Car) => car.seller)
+  sellerId: string;
 }
