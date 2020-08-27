@@ -18,6 +18,7 @@
     "test": "mocha -r ts-node/register ./spec/**/*.spec.ts",
     "ts-node": "ts-node",
     "lint": "eslint './src/**/*.{ts,js}' './spec/**/*.{ts,js}' './example-app/**/*.{ts,js}' --ignore-pattern 'build' --ignore-pattern 'yarn.lock'",
+    "check:all": "yarn lint && yarn test && yarn build",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "release": "semantic-release"
   },
@@ -33,7 +34,7 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": ">=3.0.0",
+    "admin-bro": "^3.1.0-beta.3",
     "typeorm": ">=0.2.1"
   },
   "optionalDependencies": {},
@@ -41,7 +42,7 @@
     "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "12.0.10",
-    "admin-bro": ">=3.0.0",
+    "admin-bro": "^3.1.0-beta.3",
     "chai": "^4.2.0",
     "class-validator": "^0.11.0",
     "mocha": "^6.2.2",
