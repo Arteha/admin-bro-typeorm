@@ -44,13 +44,13 @@ export class Car extends BaseEntity {
   })
   public carType: CarType;
 
-  @ManyToOne((type) => CarDealer, (carDealer) => carDealer.cars)
+  @ManyToOne(() => CarDealer, (carDealer) => carDealer.cars)
   public carDealer: CarDealer;
 
   @RelationId((car: Car) => car.carDealer)
   public carDealerId: number;
 
-  @ManyToOne((type) => CarBuyer, (carBuyer) => carBuyer.cars)
+  @ManyToOne(() => CarBuyer, (carBuyer) => carBuyer.cars)
   public carBuyer: CarBuyer;
 
   @RelationId((car: Car) => car.carBuyer)

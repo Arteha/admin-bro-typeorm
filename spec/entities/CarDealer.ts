@@ -11,6 +11,6 @@ export class CarDealer extends BaseEntity {
   @IsDefined()
   public name: string;
 
-  @OneToMany((type) => Car, (car) => car.carDealer)
+  @OneToMany(() => Car, (car) => car.carDealer)
   public cars: Array<Car>;
 }
