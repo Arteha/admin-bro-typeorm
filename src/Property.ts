@@ -52,6 +52,7 @@ export class Property extends BaseProperty {
       if (this.column.type === Number) { type = 'number' }
       if (this.column.type === String) { type = 'string' }
       if (this.column.type === Date) { type = 'datetime' }
+      if (this.column.type === Boolean) { type = 'boolean' }
     }
 
     if (this.reference()) { type = 'reference' }
