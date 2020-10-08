@@ -10,6 +10,12 @@ export class Car extends BaseEntity {
   @Column()
   name: string;
 
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+  })
+  meta: any;
+
   @ManyToOne((type) => User, (user) => user.cars)
   owner: User;
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
-import { BaseEntity, In } from 'typeorm'
-import { BaseResource, ValidationError, Filter, BaseRecord } from 'admin-bro'
+import { BaseEntity } from 'typeorm'
+import { BaseResource, ValidationError, Filter, BaseRecord, flat } from 'admin-bro'
 
 import { Property } from './Property'
 import { convertFilter } from './utils/convertFilter'
@@ -51,29 +51,6 @@ export class Resource extends BaseResource {
     }))
   }
 
-  public async populate(
-    baseRecords: Array<BaseRecord>,
-    property: Property,
-  ): Promise<Array<BaseRecord>> {
-    const fks: Array<any> = baseRecords.map((baseRecord) => baseRecord.params[property.name()])
-
-    const instances = await this.model.findByIds(fks)
-    const instancesRecord: Record<string, BaseEntity> = {}
-    instances.forEach((instance) => {
-      if (instance.hasId()) {
-        instancesRecord[(instance as any).id] = instance
-      }
-    })
-
-    baseRecords.forEach((baseRecord) => {
-      const fk = baseRecord.params[property.name()]
-      const instance = instancesRecord[fk]
-      // eslint-disable-next-line no-param-reassign
-      if (instance) { baseRecord.populated[property.name()] = new BaseRecord(instance, this) }
-    })
-    return baseRecords
-  }
-
   public async find(
     filter: Filter,
     params,
@@ -100,7 +77,7 @@ export class Resource extends BaseResource {
   }
 
   public async findMany(ids: Array<string | number>): Promise<Array<BaseRecord>> {
-    const instances = await this.model.find({ where: { id: In(ids) } })
+    const instances = await this.model.findByIds(ids)
     return instances.map((instance) => new BaseRecord(instance, this))
   }
 
@@ -154,17 +131,17 @@ export class Resource extends BaseResource {
   private prepareParams(params: Record<string, any>): Record<string, any> {
     const preparedParams: Record<string, any> = { ...params }
 
-    for (const key in params) {
-      const param = params[key]
-      const property = this.property(key)
+    this.properties().forEach((property) => {
+      const param = flat.get(preparedParams, property.path())
+      const key = property.path()
 
       // eslint-disable-next-line no-continue
-      if (!(property && param !== undefined)) continue
+      if (param === undefined) { return }
 
       const type = property.type()
 
       if (type === 'mixed') {
-        preparedParams[key] = JSON.parse(param)
+        preparedParams[key] = param
       }
 
       if (type === 'number') {
@@ -184,7 +161,7 @@ export class Resource extends BaseResource {
           preparedParams[property.column.propertyName] = { id }
         }
       }
-    }
+    })
     return preparedParams
   }
 

@@ -25,7 +25,19 @@ const run = async () => {
           },
         },
       },
-    }, Car, Seller],
+    }, {
+      resource: Car,
+      options: {
+        properties: {
+          'meta.title': {
+            type: 'string',
+          },
+          'meta.description': {
+            type: 'string',
+          },
+        },
+      },
+    }, Seller],
   })
   const router = buildRouter(admin)
 
