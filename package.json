@@ -43,7 +43,7 @@
     "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "12.0.10",
-    "admin-bro": "^3.3.0-beta.16",
+    "admin-bro": "^3.3.0-beta.18",
     "@admin-bro/design-system": "^1.7.0-beta.17",
     "chai": "^4.2.0",
     "class-validator": "^0.11.0",
