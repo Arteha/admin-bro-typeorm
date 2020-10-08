@@ -129,14 +129,14 @@ Optionally you might want to link your local version of `admin-bro` package
 (in the root folder)
 
 ```
-yarn watch
+yarn dev
 ```
 
 6. run the app in the dev mode
 
 ```
 cd example-app
-yarn start:dev
+yarn dev
 ```
 
 ### Pull request
