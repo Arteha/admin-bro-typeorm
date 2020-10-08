@@ -1808,11 +1808,12 @@ acorn@^7.3.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.0.tgz#e1ad486e6c54501634c6c397c5c121daa383607c"
   integrity sha512-+G7P8jJmCHr+S+cLfQxygbWhXy+8YTVGzAkpEbcLo2mLoL7tij/VG41QSHACSf5QgYRhMZYHuNc6drJaO0Da+w==
 
-admin-bro@^3.3.0-beta.18:
-  version "3.3.0-beta.18"
-  resolved "https://registry.yarnpkg.com/admin-bro/-/admin-bro-3.3.0-beta.18.tgz#7c4bfb1d14ee8645100b5150e19ebb3d3630b48f"
-  integrity sha512-pQ8xuBXvQjqMUUA2/9G2P7TMyz7TmoCgTKOR3NPiAv8fMHLFNpSpO/kO10ETvwSAxGsM7zWAmKBf2wslknE1tQ==
+admin-bro@^3.3.0-beta.20:
+  version "3.3.0-beta.20"
+  resolved "https://registry.yarnpkg.com/admin-bro/-/admin-bro-3.3.0-beta.20.tgz#cc89300701243b78b0fe85adae35502dce156880"
+  integrity sha512-JPnUIdW8nDLK8Hjc3vY99GX7+gxgowjzuzECd/RuMxKZUqCkWgpUcaUfsCh3HJzu8fqMheplNoFdmOj9yJnn4g==
   dependencies:
+    "@admin-bro/design-system" "^1.7.0-beta.17"
     "@babel/core" "^7.10.2"
     "@babel/parser" "^7.10.2"
     "@babel/plugin-transform-runtime" "^7.10.1"
