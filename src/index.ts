@@ -1,6 +1,9 @@
 /**
  * @module @admin-bro/typeorm
- * @description
+ * @subcategory Adapters
+ * @section modules
+ *
+ * @classdesc
  * Database adapter which integrates [TypeORM](https://typeorm.io/) into admin-bro
  *
  * ## installation

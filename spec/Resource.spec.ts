@@ -17,6 +17,8 @@ describe('Resource', () => {
     streetNumber: 'something',
     age: 4,
     stringAge: '4',
+    'meta.title': 'Hyundai',
+    'meta.description': 'Hyundai Tucson',
   }
 
   before(async () => {
@@ -66,12 +68,12 @@ describe('Resource', () => {
 
   describe('#properties', () => {
     it('returns all the properties', () => {
-      expect(resource.properties()).to.have.lengthOf(11)
+      expect(resource.properties()).to.have.lengthOf(12)
     })
 
     it('returns all properties with the correct position', () => {
       expect(resource.properties().map((property) => property.position())).to.deep.equal([
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
       ])
     })
   })
@@ -124,6 +126,16 @@ describe('Resource', () => {
       const storedRecord = await Car.findOne(params.id) as Car
 
       expect(storedRecord.stringAge).to.equal(4)
+    })
+
+    it('stores mixed type properties', async () => {
+      const params = await resource.create(data)
+      const storedRecord = await Car.findOne(params.id) as Car
+
+      expect(storedRecord.meta).to.deep.equal({
+        title: data['meta.title'],
+        description: data['meta.description'],
+      })
     })
 
     it('throws ValidationError for defined validations', async () => {

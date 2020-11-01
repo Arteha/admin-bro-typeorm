@@ -14,7 +14,12 @@
     "declarationDir": "./lib",
     "outDir": "./lib",
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "react": ["node_modules/@types/react"],
+      "styled-components": ["node_modules/@types/styled-components"]
+    }
   },
   "include": [
     "./src/**/*.ts"

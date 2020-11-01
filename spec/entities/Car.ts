@@ -44,6 +44,12 @@ export class Car extends BaseEntity {
   })
   public carType: CarType;
 
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+  })
+  public meta;
+
   @ManyToOne(() => CarDealer, (carDealer) => carDealer.cars)
   public carDealer: CarDealer;
 

@@ -14,7 +14,7 @@ module.exports = {
   migrations: [path.join(rootDir, '/migration/**/*.js')],
   subscribers: [path.join(rootDir, '/subscriber/**/*.js')],
   synchronize: true,
-  logging: false,
+  logging: true,
   cli: {
     migrationsDir: path.join(rootDir, '/migration'),
     entitiesDir: path.join(rootDir, '/entity'),

@@ -108,4 +108,12 @@ describe('Property', () => {
       ])
     })
   })
+
+  describe('#type', () => {
+    it('returns mixed type for an jsonb property', () => {
+      const column = columns.find((c) => c.propertyName === 'meta') as ColumnMetadata
+
+      expect(new Property(column).type()).to.equal('mixed')
+    })
+  })
 })
