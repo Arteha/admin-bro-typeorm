@@ -68,7 +68,6 @@ describe('Resource', () => {
 
   describe('#properties', () => {
     it('returns all the properties', () => {
-      console.log(resource.properties().map((p) => p.path()))
       expect(resource.properties()).to.have.lengthOf(13)
     })
 
