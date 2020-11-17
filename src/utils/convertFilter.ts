@@ -26,13 +26,8 @@ export function convertFilter(filter?: Filter): FindConditions<BaseEntity> {
     } else if ((one.property as Property).column.type === 'enum') {
       where[n] = one.value
     } else if ((one.property as Property).type() === 'reference') {
-      // when comes to reference TypeORM cannot filter by referenceId: YOUR_FILTER_VALUE
-      // I don't know why. But it filters by an object: reference: {id: YOUR_FILTER_VALUE}
-      // propertyPath holds `reference.id` that is why we split it by `.`
-      const [column, key] = (one.property as Property).column.propertyPath.split('.')
-      where[column] = {
-        [key]: one.value,
-      }
+      const [column] = (one.property as Property).column.propertyPath.split('.')
+      where[column] = one.value
     } else {
       where[n] = Like(`%${one.value}%`)
     }

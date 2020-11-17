@@ -8,8 +8,7 @@ export class Property extends BaseProperty {
   private columnPosition: number;
 
   constructor(column: ColumnMetadata, columnPosition = 0) {
-    // for reference fields take database name (with ...Id)
-    const path = column.referencedColumn ? column.databaseName : column.propertyPath
+    const path = column.propertyPath
     super({ path })
     this.column = column
     this.columnPosition = columnPosition
