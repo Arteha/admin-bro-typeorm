@@ -152,11 +152,15 @@ export class Resource extends BaseResource {
         if (param === null) {
           preparedParams[property.column.propertyName] = null
         } else {
+          const [ref, foreignKey] = property.column.propertyPath.split('.')
           const id = (property.column.type === Number) ? Number(param) : param
-          preparedParams[property.column.propertyName] = id
+          preparedParams[ref] = foreignKey ? {
+            [foreignKey]: id,
+          } : id
         }
       }
     })
+
     return preparedParams
   }
 
