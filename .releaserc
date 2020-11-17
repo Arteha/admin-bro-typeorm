@@ -5,10 +5,6 @@
     "next",
     "next-major",
     {
-      "name": "fix-relations",
-      "prerelease": "rc-mlt",
-    },
-    {
       "name": "beta",
       "prerelease": true
     }
