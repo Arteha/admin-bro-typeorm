@@ -23,9 +23,9 @@ describe('Property', () => {
 
   describe('#name', () => {
     it('returns a name of the property', () => {
-      const column = columns.find((c) => c.propertyName === 'id') as ColumnMetadata
+      const column = columns.find((c) => c.propertyName === 'carId') as ColumnMetadata
 
-      expect(new Property(column).name()).to.equal('id')
+      expect(new Property(column).name()).to.equal('carId')
     })
   })
 
@@ -37,7 +37,7 @@ describe('Property', () => {
     })
 
     it('returns the path of the property', () => {
-      const column = columns.find((c) => c.propertyName === 'carDealer') as ColumnMetadata
+      const column = columns.find((c) => c.propertyName === 'carDealerId') as ColumnMetadata
 
       expect(new Property(column).path()).to.equal('carDealerId')
     })
@@ -45,7 +45,7 @@ describe('Property', () => {
 
   describe('#isId', () => {
     it('returns true for primary key', () => {
-      const column = columns.find((c) => c.propertyName === 'id') as ColumnMetadata
+      const column = columns.find((c) => c.propertyName === 'carId') as ColumnMetadata
 
       expect(new Property(column).isId()).to.equal(true)
     })
@@ -59,7 +59,7 @@ describe('Property', () => {
 
   describe('#isEditable', () => {
     it('returns false for id field', async () => {
-      const column = columns.find((c) => c.propertyName === 'id') as ColumnMetadata
+      const column = columns.find((c) => c.propertyName === 'carId') as ColumnMetadata
 
       expect(new Property(column).isEditable()).to.equal(false)
     })
@@ -81,7 +81,7 @@ describe('Property', () => {
 
   describe('#reference', () => {
     it('returns the name of the referenced resource if any', () => {
-      const column = columns.find((c) => c.propertyName === 'carDealer') as ColumnMetadata
+      const column = columns.find((c) => c.propertyName === 'carDealerId') as ColumnMetadata
 
       expect(new Property(column).reference()).to.equal('CarDealer')
     })

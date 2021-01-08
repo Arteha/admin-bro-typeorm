@@ -152,16 +152,15 @@ export class Resource extends BaseResource {
         if (param === null) {
           preparedParams[property.column.propertyName] = null
         } else {
-          // references cannot be stored as an IDs in typeorm, so in order to mimic this) and
-          // not fetching reference resource) change this:
-          // { postId: "1" }
-          // to that:
-          // { post: { id: 1 } }
+          const [ref, foreignKey] = property.column.propertyPath.split('.')
           const id = (property.column.type === Number) ? Number(param) : param
-          preparedParams[property.column.propertyName] = { id }
+          preparedParams[ref] = foreignKey ? {
+            [foreignKey]: id,
+          } : id
         }
       }
     })
+
     return preparedParams
   }
 

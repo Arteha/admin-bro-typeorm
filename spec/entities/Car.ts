@@ -1,6 +1,6 @@
 import {
   Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne,
-  RelationId, UpdateDateColumn, CreateDateColumn,
+  JoinColumn, UpdateDateColumn, CreateDateColumn, RelationId,
 } from 'typeorm'
 import { IsDefined, Min, Max } from 'class-validator'
 import { CarDealer } from './CarDealer'
@@ -15,7 +15,7 @@ export enum CarType {
 @Entity()
 export class Car extends BaseEntity {
   @PrimaryGeneratedColumn()
-  public id: number;
+  public carId: number;
 
   @Column()
   @IsDefined()
@@ -51,16 +51,23 @@ export class Car extends BaseEntity {
   public meta;
 
   @ManyToOne(() => CarDealer, (carDealer) => carDealer.cars)
+  @JoinColumn({
+    name: 'car_dealer_id',
+  })
   public carDealer: CarDealer;
 
-  @RelationId((car: Car) => car.carDealer)
+  @Column({ name: 'car_dealer_id', type: 'integer', nullable: true })
   public carDealerId: number;
 
   @ManyToOne(() => CarBuyer, (carBuyer) => carBuyer.cars)
+  // @JoinColumn({
+  //   name: 'car_buyer_id',
+  // })
   public carBuyer: CarBuyer;
 
+  @Column({ name: 'car_buyer_id', type: 'uuid', nullable: true })
   @RelationId((car: Car) => car.carBuyer)
-  public carBuyerId: number;
+  public carBuyerId: string;
 
   @CreateDateColumn({ name: 'created_at' })
   public createdAt: Date;
