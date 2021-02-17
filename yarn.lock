@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@admin-bro/design-system@^1.7.0":
+"@admin-bro/design-system@1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@admin-bro/design-system/-/design-system-1.7.0.tgz#1a5f46bff89db7aba33367db9a84cf00ddaaea5c"
   integrity sha512-pf+b/YkKoylvcg1wp1yUhbWv0e5MZHjKQdPqTt6UXutVgpqldimDv5be3i2avkqNSB5XrOXVZTIcW4vj0vy33g==
@@ -1887,12 +1887,12 @@ acorn@^7.3.1:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.0.tgz#e1ad486e6c54501634c6c397c5c121daa383607c"
   integrity sha512-+G7P8jJmCHr+S+cLfQxygbWhXy+8YTVGzAkpEbcLo2mLoL7tij/VG41QSHACSf5QgYRhMZYHuNc6drJaO0Da+w==
 
-admin-bro@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/admin-bro/-/admin-bro-3.3.1.tgz#ef7710310f80b0c945fbb1dff49c6b2359c9a882"
-  integrity sha512-ObdiPDMA8u89U35fwRHxSaje2zBjPqkKlT+6oN80HIRdkQImQ+51hEU5YaQ/EEzWFQGqGYuSxAhkFtXY6ZLjhg==
+admin-bro@3.4.0-beta.2:
+  version "3.4.0-beta.2"
+  resolved "https://registry.yarnpkg.com/admin-bro/-/admin-bro-3.4.0-beta.2.tgz#94f952c9bc992e586cd86e19374d26f701a61923"
+  integrity sha512-6xyRCREeHQunYAfHa+owpCFuxeWEckLwko0K5zY9FB/X7sVTWiMuH4/u99paQp3xoD9QMeviaFI1ajFipYE8nw==
   dependencies:
-    "@admin-bro/design-system" "^1.7.0"
+    "@admin-bro/design-system" "1.7.0"
     "@babel/core" "^7.10.2"
     "@babel/parser" "^7.10.2"
     "@babel/plugin-transform-runtime" "^7.10.1"

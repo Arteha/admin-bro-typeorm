@@ -60,4 +60,8 @@ export class Property extends BaseProperty {
 
     return type
   }
+
+  public isArray(): boolean {
+    return this.column.isArray
+  }
 }

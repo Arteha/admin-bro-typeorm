@@ -145,7 +145,11 @@ export class Resource extends BaseResource {
       }
 
       if (type === 'number') {
-        preparedParams[key] = Number(param)
+        if (property.isArray()) {
+          preparedParams[key] = param.map((p) => Number(p))
+        } else {
+          preparedParams[key] = Number(param)
+        }
       }
 
       if (type === 'reference') {
