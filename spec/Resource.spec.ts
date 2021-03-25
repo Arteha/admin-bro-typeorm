@@ -86,6 +86,28 @@ describe('Resource', () => {
     })
   })
 
+  describe('#find', () => {
+    beforeEach(async () => {
+      await resource.create(data)
+      await resource.create({ ...data, name: 'other' })
+    })
+
+    it('returns all record when no query', async () => {
+      const filter = new Filter({}, resource)
+      return expect(await resource.find(filter, { sort: { sortBy: 'name' } })).to.have.lengthOf(2)
+    })
+
+    it('returns matched record when filter is provided', async () => {
+      const filter = new Filter({ name: 'other' }, resource)
+      return expect(await resource.find(filter, { sort: { sortBy: 'name' } })).to.have.lengthOf(1)
+    })
+
+    it('returns no records when filter does not match', async () => {
+      const filter = new Filter({ name: 'others' }, resource)
+      return expect(await resource.find(filter, { sort: { sortBy: 'name' } })).to.have.lengthOf(0)
+    })
+  })
+
   describe('#count', () => {
     it('returns number of records', async () => {
       expect(await resource.count({} as Filter)).to.eq(0)
