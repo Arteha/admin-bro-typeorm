@@ -10,10 +10,10 @@ export const convertFilter = (
     return {}
   }
 
-  const { filters } = filterObject
+  const { filters } = filterObject ?? {}
   const where = {}
 
-  Object.entries(filters).forEach(([fieldKey, filter]) => {
+  Object.entries(filters ?? {}).forEach(([fieldKey, filter]) => {
     const parser = parsers.find((p) => p.isParserForType(filter))
 
     if (parser) {
