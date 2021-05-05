@@ -3,7 +3,7 @@ import { BaseEntity } from 'typeorm'
 import { BaseResource, ValidationError, Filter, BaseRecord, flat } from 'admin-bro'
 
 import { Property } from './Property'
-import { convertFilter } from './utils/convertFilter'
+import { convertFilter } from './utils/filter/filter.converter'
 
 type ParamsType = Record<string, any>;
 
