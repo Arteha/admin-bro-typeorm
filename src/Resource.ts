@@ -4,6 +4,7 @@ import { BaseResource, ValidationError, Filter, BaseRecord, flat } from 'admin-b
 
 import { Property } from './Property'
 import { convertFilter } from './utils/filter/filter.converter'
+import safeParseNumber from './utils/safe-parse-number'
 
 type ParamsType = Record<string, any>;
 
@@ -146,9 +147,9 @@ export class Resource extends BaseResource {
 
       if (type === 'number') {
         if (property.isArray()) {
-          preparedParams[key] = param ? param.map((p) => Number(p)) : param
+          preparedParams[key] = param ? param.map((p) => safeParseNumber(p)) : param
         } else {
-          preparedParams[key] = Number(param)
+          preparedParams[key] = safeParseNumber(param)
         }
       }
 
