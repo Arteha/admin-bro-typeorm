@@ -1,6 +1,6 @@
 import { Connection, BaseEntity } from 'typeorm'
 
-import { BaseDatabase } from 'admin-bro'
+import { BaseDatabase } from 'adminjs'
 import { Resource } from './Resource'
 
 export class Database extends BaseDatabase {

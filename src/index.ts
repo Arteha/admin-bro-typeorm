@@ -1,26 +1,26 @@
 /**
- * @module @admin-bro/typeorm
+ * @module @adminjs/typeorm
  * @subcategory Adapters
  * @section modules
  *
  * @classdesc
- * Database adapter which integrates [TypeORM](https://typeorm.io/) into admin-bro
+ * Database adapter which integrates [TypeORM](https://typeorm.io/) into adminjs
  *
  * ## installation
  *
  * ```
- * yarn add @admin-bro/typeorm
+ * yarn add @adminjs/typeorm
  * ```
  *
  * ## Usage
  *
- * The plugin can be registered using standard `AdminBro.registerAdapter` method.
+ * The plugin can be registered using standard `AdminJS.registerAdapter` method.
  *
  * ```
- * import { Database, Resource } from '@admin-bro/typeorm';
- * import AdminBro from 'admin-bro'
+ * import { Database, Resource } from '@adminjs/typeorm';
+ * import AdminJS from 'adminjs'
  *
- * AdminBro.registerAdapter(TypeOrmAdapter);
+ * AdminJS.registerAdapter(TypeOrmAdapter);
  *
  * //...
  * ```
@@ -47,14 +47,14 @@
  *     RelationId
  * } from 'typeorm';
  * import * as express from 'express';
- * import { Database, Resource } from '@admin-bro/typeorm';
+ * import { Database, Resource } from '@adminjs/typeorm';
  * import { validate } from 'class-validator'
  *
- * import AdminBro from 'admin-bro';
- * import * as AdminBroExpress from '@admin-bro/express'
+ * import AdminJS from 'adminjs';
+ * import * as AdminJSExpress from '@adminjs/express'
  *
  * Resource.validate = validate;
- * AdminBro.registerAdapter({ Database, Resource });
+ * AdminJS.registerAdapter({ Database, Resource });
  *
  * \@Entity()
  * export class Person extends BaseEntity
@@ -71,7 +71,7 @@
  *     \@ManyToOne(type => CarDealer, carDealer => carDealer.cars)
  *     organization: Organization;
  *
- *     // in order be able to fetch resources in admin-bro - we have to have id available
+ *     // in order be able to fetch resources in adminjs - we have to have id available
  *     \@RelationId((person: Person) => person.organization)
  *     organizationId: number;
  * }
@@ -83,7 +83,7 @@
  *     // Applying connection to model
  *     Person.useConnection(connection);
  *
- *     const adminBro = new AdminBro({
+ *     const adminJs = new AdminJS({
  *         // databases: [connection],
  *         resources: [
  *             { resource: Person, options: { parent: { name: 'foobar' } } }
@@ -92,8 +92,8 @@
  *     });
  *
  *     const app = express();
- *     const router = AdminBroExpress.buildRouter(adminBro);
- *     app.use(adminBro.options.rootPath, router);
+ *     const router = AdminJSExpress.buildRouter(adminJs);
+ *     app.use(adminJs.options.rootPath, router);
  *     app.listen(3000);
  * })();
  * ```

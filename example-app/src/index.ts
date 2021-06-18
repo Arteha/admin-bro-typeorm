@@ -1,21 +1,21 @@
 import 'reflect-metadata'
 import { createConnection } from 'typeorm'
 import express from 'express'
-import AdminBro from 'admin-bro'
-import { buildRouter } from '@admin-bro/express'
-import * as TypeormAdapter from '@admin-bro/typeorm'
+import AdminJS from 'adminjs'
+import { buildRouter } from '@adminjs/express'
+import * as TypeormAdapter from '@adminjs/typeorm'
 import { User } from './entity/User'
 import { Car } from './entity/Car'
 import { Seller } from './entity/Seller'
 
-AdminBro.registerAdapter(TypeormAdapter)
+AdminJS.registerAdapter(TypeormAdapter)
 
 const PORT = 3000
 
 const run = async () => {
   await createConnection()
   const app = express()
-  const admin = new AdminBro({
+  const admin = new AdminJS({
     resources: [{
       resource: User,
       options: {

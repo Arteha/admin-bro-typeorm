@@ -6,6 +6,7 @@
       "es2018",
       "DOM"
     ],
+    "skipLibCheck": true,
     "sourceMap": true,
     "noImplicitAny": false,
     "strictNullChecks": true,

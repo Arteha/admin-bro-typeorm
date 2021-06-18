@@ -1,4 +1,4 @@
-import { PropertyType } from 'admin-bro'
+import { PropertyType } from 'adminjs'
 
 export type DataType = 'string' | 'number' | 'float' | 'datetime' | 'date'
   | 'array' | 'object' | 'boolean';
