@@ -14,7 +14,7 @@ import AdminJS from 'adminjs'
 
 AdminJS.registerAdapter({ Database, Resource });
 
-// optional: if you use class-validator you have to inject this to resource.
+// Optional: if you use class-validator you have to inject this to resource.
 import { validate } from 'class-validator'
 Resource.validate = validate
 ```
