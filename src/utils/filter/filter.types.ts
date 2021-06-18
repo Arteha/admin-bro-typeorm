@@ -1,4 +1,4 @@
-import { FilterElement } from 'admin-bro'
+import { FilterElement } from 'adminjs'
 import { FindManyOptions } from 'typeorm'
 
 export type FilterParser = {

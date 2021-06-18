@@ -1,7 +1,7 @@
 import { FilterParser } from './filter.types'
 
 /**
- * It wasn't possible to pass raw filters to adapters with admin-bro
+ * It wasn't possible to pass raw filters to adapters with AdminJS
  * This solution allows you to pass custom filters to typeorm adapter modyfing list handler
  *
  * In your custom list handler modify creating filters in this way:

@@ -1,4 +1,4 @@
-import { Filter } from 'admin-bro'
+import { Filter } from 'adminjs'
 import { BaseEntity, FindConditions } from 'typeorm'
 import { DefaultParser } from './default-filter.parser'
 import { parsers } from './filter.utils'
