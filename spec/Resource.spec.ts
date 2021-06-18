@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { BaseProperty, BaseRecord, ValidationError, Filter } from 'admin-bro'
+import { BaseProperty, BaseRecord, ValidationError, Filter } from 'adminjs'
 import { validate } from 'class-validator'
 
 import { Car } from './entities/Car'

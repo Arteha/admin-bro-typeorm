@@ -1,5 +1,5 @@
 import { BaseEntity, FindConditions, Between, MoreThanOrEqual, LessThanOrEqual, Like } from 'typeorm'
-import { Filter } from 'admin-bro'
+import { Filter } from 'adminjs'
 import { Property } from '../Property'
 
 function safeParseJSON(json: string) {

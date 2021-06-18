@@ -1,11 +1,11 @@
 {
-  "name": "@admin-bro/typeorm",
+  "name": "@adminjs/typeorm",
   "version": "1.4.0",
-  "description": "TypeORM adapter for AdminBro",
+  "description": "TypeORM adapter for AdminJS",
   "keywords": [
     "typeorm",
     "provider",
-    "admin-bro",
+    "adminjs",
     "orm admin",
     "typeorm admin",
     "admin panel"
@@ -25,7 +25,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SoftwareBrothers/admin-bro-typeorm.git"
+    "url": "git+https://github.com/SoftwareBrothers/adminjs-typeorm.git"
   },
   "husky": {
     "hooks": {
@@ -35,7 +35,7 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "admin-bro": "^3.3.1",
+    "adminjs": "^3.3.1",
     "typeorm": ">=0.2.28"
   },
   "optionalDependencies": {},
@@ -43,7 +43,7 @@
     "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
     "@types/node": "12.0.10",
-    "admin-bro": "^3.3.1",
+    "adminjs": "^3.3.1",
     "chai": "^4.2.0",
     "class-validator": "^0.11.0",
     "mocha": "^6.2.2",

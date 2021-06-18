@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { BaseEntity } from 'typeorm'
-import { BaseResource, ValidationError, Filter, BaseRecord, flat } from 'admin-bro'
+import { BaseResource, ValidationError, Filter, BaseRecord, flat } from 'adminjs'
 
 import { Property } from './Property'
 import { convertFilter } from './utils/convertFilter'

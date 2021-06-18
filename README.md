@@ -1,18 +1,18 @@
-## admin-bro-typeorm
+## adminjs-typeorm
 
-This is an official [admin-bro](https://github.com/SoftwareBrothers/admin-bro) adapter which integrates [TypeORM](https://typeorm.io/) into admin-bro. (originally forked from [Arteha/admin-bro-typeorm](https://github.com/Arteha/admin-bro-typeorm))
+This is an official [AdminJS](https://github.com/SoftwareBrothers/adminjs) adapter which integrates [TypeORM](https://typeorm.io/) into AdminJS. (originally forked from [Arteha/admin-bro-typeorm](https://github.com/Arteha/admin-bro-typeorm))
 
-Installation: `yarn add @admin-bro/typeorm`
+Installation: `yarn add @adminjs/typeorm`
 
 ## Usage
 
-The plugin can be registered using standard `AdminBro.registerAdapter` method.
-o
-```typescript
-import { Database, Resource } from '@admin-bro/typeorm'
-import AdminBro from 'admin-bro'
+The plugin can be registered using standard `AdminJS.registerAdapter` method.
 
-AdminBro.registerAdapter({ Database, Resource });
+```typescript
+import { Database, Resource } from '@adminjs/typeorm'
+import AdminJS from 'adminjs'
+
+AdminJS.registerAdapter({ Database, Resource });
 
 // optional: if you use class-validator you have to inject this to resource.
 import { validate } from 'class-validator'
@@ -23,67 +23,67 @@ Resource.validate = validate
 
 ```typescript
 import {
-    BaseEntity,
-    Entity, PrimaryGeneratedColumn, Column,
-    createConnection,
-    ManyToOne,
-    RelationId
+  BaseEntity,
+  Entity, PrimaryGeneratedColumn, Column,
+  createConnection,
+  ManyToOne,
+  RelationId
 } from 'typeorm'
 import * as express from 'express'
-import { Database, Resource } from '@admin-bro/typeorm'
+import { Database, Resource } from '@adminjs/typeorm'
 import { validate } from 'class-validator'
 
-import AdminBro from 'admin-bro'
-import * as AdminBroExpress from '@admin-bro/express'
+import AdminJS from 'adminjs'
+import * as AdminJSExpress from '@adminjs/express'
 
 Resource.validate = validate
-AdminBro.registerAdapter({ Database, Resource })
+AdminJS.registerAdapter({ Database, Resource })
 
 @Entity()
 export class Person extends BaseEntity
 {
-    @PrimaryGeneratedColumn()
-    public id: number;
-    
-    @Column({type: 'varchar'})
-    public firstName: string;
-    
-    @Column({type: 'varchar'})
-    public lastName: string;
+  @PrimaryGeneratedColumn()
+  public id: number;
 
-    @ManyToOne(type => CarDealer, carDealer => carDealer.cars)
-    organization: Organization;
+  @Column({type: 'varchar'})
+  public firstName: string;
 
-    // in order be able to fetch resources in admin-bro - we have to have id available
-    @RelationId((person: Person) => person.organization)
-    organizationId: number;
-    
-    // For fancy clickable relation links:
-    public toString(): string
-    {
-        return `${firstName} ${lastName}`;
-    }
+  @Column({type: 'varchar'})
+  public lastName: string;
+
+  @ManyToOne(type => CarDealer, carDealer => carDealer.cars)
+  organization: Organization;
+
+  // in order be able to fetch resources in adminjs - we have to have id available
+  @RelationId((person: Person) => person.organization)
+  organizationId: number;
+
+  // For fancy clickable relation links:
+  public toString(): string
+  {
+    return `${firstName} ${lastName}`;
+  }
 }
 
 ( async () =>
 {
-    const connection = await createConnection({/* ... */})
-    
-    // Applying connection to model
-    Person.useConnection(connection)
-    
-    const adminBro = new AdminBro({
-        // databases: [connection],
-        resources: [
-            { resource: Person, options: { parent: { name: 'foobar' } } }
-        ], 
-        rootPath: '/admin',
-    })
-    
-    const app = express()
-    const router = AdminBroExpress.buildRouter(adminBro)
-    app.use(adminBro.options.rootPath, router)
-    app.listen(3000)
+  const connection = await createConnection({/* ... */})
+
+  // Applying connection to model
+  Person.useConnection(connection)
+
+  const adminJs = new AdminJS({
+    // databases: [connection],
+    resources: [
+      { resource: Person, options: { parent: { name: 'foobar' } } }
+      ],
+    rootPath: '/admin',
+  })
+
+  const app = express()
+  const router = AdminJSExpress.buildRouter(adminJs)
+  app.use(adminJs.options.rootPath, router)
+  app.listen(3000)
 })()
 ```
 
@@ -112,15 +112,15 @@ yarn link
 
 4. Setup example app
 
-Install all dependencies and use previously linked version of `@admin-bro/typeorm`.
+Install all dependencies and use previously linked version of `@adminjs/typeorm`.
 
 ```
 cd example-app
 yarn install
-yarn link @admin-bro/typeorm
+yarn link @adminjs/typeorm
 ```
 
-Optionally you might want to link your local version of `admin-bro` package
+Optionally you might want to link your local version of `adminjs` package
 
 5. Make sure you have all the envs set (which are defined in `example-app/ormconfig.js`)
 

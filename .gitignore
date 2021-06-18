@@ -159,6 +159,6 @@ dist
 types
 build
 lib
-.adminbro
+.adminjs
 
 example-app/cypress/videos

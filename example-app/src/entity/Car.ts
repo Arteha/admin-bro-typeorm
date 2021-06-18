@@ -22,7 +22,7 @@ export class Car extends BaseEntity {
   @ManyToOne((type) => Seller, (seller) => seller.cars)
   seller: User;
 
-  // in order be able to fetch resources in admin-bro - we have to have id available
+  // in order be able to fetch resources in adminjs - we have to have id available
   @RelationId((car: Car) => car.owner)
   ownerId: number;
 
