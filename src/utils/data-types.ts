@@ -6,16 +6,19 @@ export type DataType = 'string' | 'number' | 'float' | 'datetime' | 'date'
 const NUMBER = [
   // PrimaryGeneratedColumnType:
   'int', 'int2', 'int4', 'int8', 'integer', 'tinyint', 'smallint',
-  'mediumint', 'bigint', 'dec', 'decimal', 'fixed', 'numeric', 'number',
+  'mediumint', 'dec', 'decimal', 'fixed', 'numeric', 'number',
 
   // WithWidthColumnType:
-  'tinyint', 'smallint', 'mediumint', 'int', 'bigint',
+  'tinyint', 'smallint', 'mediumint', 'int',
 
   // SimpleColumnType:
   'int2', 'integer', 'int4', 'int8', 'int64', 'unsigned big int', 'float4', 'float8',
 ]
 
 const STRING = [
+  // PrimaryGeneratedColumnType
+  'bigint',
+
   // SpatialColumnType:
   'geometry', 'geography',
 
