@@ -93,7 +93,7 @@ export class Resource extends BaseResource {
   public async update(pk: string | number, params: any = {}): Promise<ParamsType> {
     const instance = await this.model.findOne(pk)
     if (instance) {
-      const preparedParams = flat.unflatten(this.prepareParams(params))
+      const preparedParams = flat.unflatten<any, any>(this.prepareParams(params))
       Object.keys(preparedParams).forEach((paramName) => {
         instance[paramName] = preparedParams[paramName]
       })
