@@ -25,10 +25,10 @@ Resource.validate = validate
 import {
   BaseEntity,
   Entity, PrimaryGeneratedColumn, Column,
-  createConnection,
   ManyToOne,
   RelationId
 } from 'typeorm'
+import { MyDataSource } from './my-data-source'
 import * as express from 'express'
 import { Database, Resource } from '@adminjs/typeorm'
 import { validate } from 'class-validator'
@@ -67,13 +67,10 @@ export class Person extends BaseEntity
 
 ( async () =>
 {
-  const connection = await createConnection({/* ... */})
-
-  // Applying connection to model
-  Person.useConnection(connection)
+  await MyDataSource.initialize();
 
   const adminJs = new AdminJS({
-    // databases: [connection],
+    // databases: [MyDataSource],
     resources: [
       { resource: Person, options: { parent: { name: 'foobar' } } }
       ],

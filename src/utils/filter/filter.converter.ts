@@ -1,11 +1,11 @@
 import { Filter } from 'adminjs'
-import { BaseEntity, FindConditions } from 'typeorm'
+import { BaseEntity, FindOptionsWhere } from 'typeorm'
 import { DefaultParser } from './default-filter.parser'
 import { parsers } from './filter.utils'
 
 export const convertFilter = (
   filterObject?: Filter,
-): FindConditions<BaseEntity> => {
+): FindOptionsWhere<BaseEntity> => {
   if (!filterObject) {
     return {}
   }

@@ -60,9 +60,9 @@ export class Car extends BaseEntity {
   public carDealerId: number;
 
   @ManyToOne(() => CarBuyer, (carBuyer) => carBuyer.cars)
-  // @JoinColumn({
-  //   name: 'car_buyer_id',
-  // })
+  @JoinColumn({
+    name: 'car_buyer_id',
+  })
   public carBuyer: CarBuyer;
 
   @Column({ name: 'car_buyer_id', type: 'uuid', nullable: true })

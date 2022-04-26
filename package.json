@@ -19,6 +19,7 @@
     "test": "mocha -r ts-node/register ./spec/**/*.spec.ts",
     "ts-node": "ts-node",
     "lint": "eslint './src/**/*.{ts,js}' './spec/**/*.{ts,js}' './example-app/**/*.{ts,js}' --ignore-pattern 'build' --ignore-pattern 'yarn.lock'",
+    "migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -d spec/utils/test-data-source.ts",
     "check:all": "yarn lint && yarn test && yarn build",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "release": "semantic-release"
@@ -36,7 +37,7 @@
   "license": "MIT",
   "peerDependencies": {
     "adminjs": "^5.0.0",
-    "typeorm": "~0.2.45"
+    "typeorm": "~0.3.0"
   },
   "optionalDependencies": {},
   "devDependencies": {
@@ -59,12 +60,12 @@
     "eslint-plugin-react-hooks": "^4.0.8",
     "husky": "^4.2.5",
     "mocha": "^6.2.2",
-    "pg": "^7.12.1",
+    "pg": "^8.7.3",
     "semantic-release": "^17.0.7",
     "semantic-release-slack-bot": "^1.6.2",
-    "ts-node": "^8.4.1",
-    "tsconfig-paths": "^3.9.0",
-    "typeorm": "~0.2.45",
-    "typescript": "^4.0.3"
+    "ts-node": "^10.7.0",
+    "tsconfig-paths": "^3.14.1",
+    "typeorm": "~0.3.0",
+    "typescript": "^4.6.3"
   }
 }

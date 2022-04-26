@@ -56,6 +56,7 @@ export class Property extends BaseProperty {
 
     if (this.reference()) { type = 'reference' }
 
+    // eslint-disable-next-line no-console
     if (!type) { console.warn(`Unhandled type: ${this.column.type}`) }
 
     return type

@@ -4,7 +4,7 @@ import { validate } from 'class-validator'
 
 import { Car } from './entities/Car'
 import { CarDealer } from './entities/CarDealer'
-import { connect, close } from './utils/testConnection'
+import { dataSource } from './utils/test-data-source'
 
 import { Resource } from '../src/Resource'
 import { CarBuyer } from './entities/CarBuyer'
@@ -22,7 +22,7 @@ describe('Resource', () => {
   }
 
   before(async () => {
-    await connect()
+    await dataSource.initialize()
   })
 
   beforeEach(async () => {
@@ -33,7 +33,7 @@ describe('Resource', () => {
   })
 
   after(async () => {
-    close()
+    dataSource.destroy()
   })
 
   describe('.isAdapterFor', () => {
@@ -68,12 +68,12 @@ describe('Resource', () => {
 
   describe('#properties', () => {
     it('returns all the properties', () => {
-      expect(resource.properties()).to.have.lengthOf(13)
+      expect(resource.properties()).to.have.lengthOf(12)
     })
 
     it('returns all properties with the correct position', () => {
       expect(resource.properties().map((property) => property.position())).to.deep.equal([
-        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
       ])
     })
   })
@@ -138,23 +138,29 @@ describe('Resource', () => {
 
     it('stores Column with defined name property', async () => {
       const params = await resource.create(data)
-      const storedRecord = await Car.findOne(params.carId) as Car
+      const reference: any = {}
+      reference[resource.idName()] = params.carId
+      const storedRecord: Car|null = await Car.findOneBy(reference)
 
-      expect(storedRecord.streetNumber).to.equal(data.streetNumber)
+      expect(storedRecord?.streetNumber).to.equal(data.streetNumber)
     })
 
     it('stores number Column with property as string', async () => {
       const params = await resource.create(data)
-      const storedRecord = await Car.findOne(params.carId) as Car
+      const reference: any = {}
+      reference[resource.idName()] = params.carId
+      const storedRecord: Car|null = await Car.findOneBy(reference)
 
-      expect(storedRecord.stringAge).to.equal(4)
+      expect(storedRecord?.stringAge).to.equal(4)
     })
 
     it('stores mixed type properties', async () => {
       const params = await resource.create(data)
-      const storedRecord = await Car.findOne(params.carId) as Car
+      const reference: any = {}
+      reference[resource.idName()] = params.carId
+      const storedRecord: Car|null = await Car.findOneBy(reference)
 
-      expect(storedRecord.meta).to.deep.equal({
+      expect(storedRecord?.meta).to.deep.equal({
         title: data['meta.title'],
         description: data['meta.description'],
       })
@@ -218,7 +224,7 @@ describe('Resource', () => {
       })
       const recordInDb = await resource.findOne((record && record.id()) as string)
 
-      expect(recordInDb && recordInDb.param('name')).to.equal(ford)
+      expect(recordInDb && recordInDb.get('name')).to.equal(ford)
     })
 
     it('throws error when wrong name is given', async () => {
@@ -274,7 +280,7 @@ describe('Resource', () => {
 
     afterEach(async () => {
       await Car.delete(carParams.carId)
-      await CarDealer.delete(carDealer)
+      await CarDealer.delete(carDealer.id)
     })
 
     it('deletes the resource', async () => {

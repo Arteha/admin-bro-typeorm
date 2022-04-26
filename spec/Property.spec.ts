@@ -3,13 +3,13 @@ import { expect } from 'chai'
 import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata'
 import { Property } from '../src/Property'
 import { Car } from './entities/Car'
-import { connect, close } from './utils/testConnection'
+import { dataSource } from './utils/test-data-source'
 
 describe('Property', () => {
   let columns: Array<ColumnMetadata>
 
   before(async () => {
-    await connect()
+    await dataSource.initialize()
   })
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('Property', () => {
 
   after(async () => {
     await Car.delete({})
-    close()
+    dataSource.destroy()
   })
 
   describe('#name', () => {

@@ -62,7 +62,7 @@ jobs:
       - name: Lint
         run: yarn lint
       - name: Migrate
-        run: yarn typeorm migration:run
+        run: yarn run migrate
       - name: Test
         run: yarn test
  

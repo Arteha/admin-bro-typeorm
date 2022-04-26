@@ -4,13 +4,17 @@ import { Car } from './Car'
 
 @Entity()
 export class CarBuyer extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn('uuid', {
+    name: 'car_buyer_id',
+  })
   public carBuyerId: string;
 
   @Column()
   @IsDefined()
   public name: string;
 
-  @OneToMany(() => Car, (car) => car.carDealer)
+  @OneToMany(() => Car, (car) => car.carDealer, {
+    cascade: true,
+  })
   public cars: Array<Car>;
 }

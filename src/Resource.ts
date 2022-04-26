@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { BaseEntity } from 'typeorm'
+import { BaseEntity, In } from 'typeorm'
 import { BaseResource, ValidationError, Filter, BaseRecord, flat } from 'adminjs'
 
 import { Property } from './Property'
@@ -38,6 +38,10 @@ export class Resource extends BaseResource {
     return this.model.name
   }
 
+  public idName(): string {
+    return this.model.getRepository().metadata.primaryColumns[0].propertyName
+  }
+
   public properties(): Array<Property> {
     return [...Object.values(this.propsObject)]
   }
@@ -54,10 +58,11 @@ export class Resource extends BaseResource {
 
   public async find(
     filter: Filter,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     params,
   ): Promise<Array<BaseRecord>> {
     const { limit = 10, offset = 0, sort = {} } = params
-    const { direction, sortBy } = sort as any
+    const { direction, sortBy } = sort
     const instances = await this.model.find({
       where: convertFilter(filter),
       take: limit,
@@ -70,7 +75,10 @@ export class Resource extends BaseResource {
   }
 
   public async findOne(id: string | number): Promise<BaseRecord | null> {
-    const instance = await this.model.findOne(id)
+    const reference: any = {}
+    reference[this.idName()] = id
+
+    const instance = await this.model.findOneBy(reference)
     if (!instance) {
       return null
     }
@@ -78,12 +86,15 @@ export class Resource extends BaseResource {
   }
 
   public async findMany(ids: Array<string | number>): Promise<Array<BaseRecord>> {
-    const instances = await this.model.findByIds(ids)
+    const reference: any = {}
+    reference[this.idName()] = In(ids)
+    const instances = await this.model.findBy(reference)
+
     return instances.map((instance) => new BaseRecord(instance, this))
   }
 
   public async create(params: Record<string, any>): Promise<ParamsType> {
-    const instance = await this.model.create(this.prepareParams(params))
+    const instance = this.model.create(this.prepareParams(params))
 
     await this.validateAndSave(instance)
 
@@ -91,7 +102,9 @@ export class Resource extends BaseResource {
   }
 
   public async update(pk: string | number, params: any = {}): Promise<ParamsType> {
-    const instance = await this.model.findOne(pk)
+    const reference: any = {}
+    reference[this.idName()] = pk
+    const instance = await this.model.findOneBy(reference)
     if (instance) {
       const preparedParams = flat.unflatten<any, any>(this.prepareParams(params))
       Object.keys(preparedParams).forEach((paramName) => {
@@ -104,8 +117,13 @@ export class Resource extends BaseResource {
   }
 
   public async delete(pk: string | number): Promise<any> {
+    const reference: any = {}
+    reference[this.idName()] = pk
     try {
-      await this.model.delete(pk)
+      const instance = await this.model.findOneBy(reference)
+      if (instance) {
+        await instance.remove()
+      }
     } catch (error) {
       if (error.name === 'QueryFailedError') {
         throw new ValidationError({}, {
@@ -198,6 +216,7 @@ export class Resource extends BaseResource {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public static isAdapterFor(rawResource: any): boolean {
     try {
       return !!rawResource.getRepository().metadata
