@@ -1,6 +1,6 @@
 {
   "name": "@adminjs/typeorm",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "description": "TypeORM adapter for AdminJS",
   "keywords": [
     "typeorm",
