@@ -1,7 +1,7 @@
-import { DataSource, BaseEntity } from 'typeorm'
+import { BaseEntity, DataSource } from 'typeorm'
 
 import { BaseDatabase } from 'adminjs'
-import { Resource } from './Resource'
+import { Resource } from './Resource.js'
 
 export class Database extends BaseDatabase {
   public constructor(public readonly dataSource: DataSource) {

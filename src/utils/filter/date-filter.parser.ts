@@ -1,5 +1,5 @@
 import { Between, LessThanOrEqual, MoreThanOrEqual } from 'typeorm'
-import { FilterParser } from './filter.types'
+import { FilterParser } from './filter.types.js'
 
 export const DateParser: FilterParser = {
   isParserForType: (filter) => ['date', 'datetime'].includes(filter.property.type()),

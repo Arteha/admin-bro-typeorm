@@ -8602,10 +8602,10 @@ typeorm@~0.3.0:
     xml2js "^0.4.23"
     yargs "^17.3.1"
 
-typescript@^4.6.3:
-  version "4.6.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.3.tgz#eefeafa6afdd31d725584c67a0eaba80f6fc6c6c"
-  integrity sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==
+typescript@^5.1.0-dev.20230302:
+  version "5.1.0-dev.20230302"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.0-dev.20230302.tgz#cf65ea1a67c69e11a50c9bdd93b36529d6ac9dd9"
+  integrity sha512-zyc2TZ4vL1jj9NZ3LKoaqE1zTu/G6NeMwVfSA1tVpxQfT7fwiKtkJcecOAsdESok9KaFNTm/sy80/25/Umx32A==
 
 uglify-js@^3.1.4:
   version "3.15.4"

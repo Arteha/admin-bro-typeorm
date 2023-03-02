@@ -1,5 +1,5 @@
-import { FilterParser } from './filter.types'
-import { safeParseJSON } from './filter.utils'
+import { FilterParser } from './filter.types.js'
+import { safeParseJSON } from './filter.utils.js'
 
 export const JSONParser: FilterParser = {
   isParserForType: (filter) => ['boolean', 'number', 'float', 'object', 'array'].includes(

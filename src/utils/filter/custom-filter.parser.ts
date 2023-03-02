@@ -1,4 +1,4 @@
-import { FilterParser } from './filter.types'
+import { FilterParser } from './filter.types.js'
 
 /**
  * It wasn't possible to pass raw filters to adapters with AdminJS
@@ -16,5 +16,8 @@ import { FilterParser } from './filter.types'
  */
 export const CustomParser: FilterParser = {
   isParserForType: (filter) => (filter as any)?.custom,
-  parse: (filter, fieldKey) => ({ filterKey: fieldKey, filterValue: (filter as any)?.custom }),
+  parse: (filter, fieldKey) => ({
+    filterKey: fieldKey,
+    filterValue: (filter as any)?.custom,
+  }),
 }

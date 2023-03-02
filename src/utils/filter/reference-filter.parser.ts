@@ -1,6 +1,6 @@
 import { FilterElement } from 'adminjs'
-import { Property } from '../../Property'
-import { FilterParser } from './filter.types'
+import { Property } from '../../Property.js'
+import { FilterParser } from './filter.types.js'
 
 export const ReferenceParser: FilterParser = {
   isParserForType: (filter) => filter.property.type() === 'reference',

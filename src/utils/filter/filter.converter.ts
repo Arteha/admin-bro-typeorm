@@ -1,7 +1,7 @@
 import { Filter } from 'adminjs'
 import { BaseEntity, FindOptionsWhere } from 'typeorm'
-import { DefaultParser } from './default-filter.parser'
-import { parsers } from './filter.utils'
+import { DefaultParser } from './default-filter.parser.js'
+import { parsers } from './filter.utils.js'
 
 export const convertFilter = (
   filterObject?: Filter,

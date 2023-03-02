@@ -120,5 +120,5 @@
  * in our case external ID was is a number.
  */
 
-export * from './Database'
-export * from './Resource'
+export * from './Database.js'
+export * from './Resource.js'

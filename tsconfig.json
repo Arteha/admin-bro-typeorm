@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "moduleResolution": "nodenext",
+    "module": "nodenext",
     "target": "es6",
-    "lib": [
-      "es2018",
-      "DOM"
-    ],
+    "lib": ["es2018", "DOM"],
     "skipLibCheck": true,
     "sourceMap": true,
     "noImplicitAny": false,
@@ -22,11 +20,6 @@
       "styled-components": ["node_modules/@types/styled-components"]
     }
   },
-  "include": [
-    "./src/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "lib"
-  ]
+  "include": ["./src/**/*.ts"],
+  "exclude": ["node_modules", "lib"]
 }

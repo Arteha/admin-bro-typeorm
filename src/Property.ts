@@ -1,6 +1,6 @@
-import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata'
 import { BaseProperty, PropertyType } from 'adminjs'
-import { DATA_TYPES } from './utils/data-types'
+import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata.js'
+import { DATA_TYPES } from './utils/data-types.js'
 
 export class Property extends BaseProperty {
   public column: ColumnMetadata;
@@ -16,8 +16,8 @@ export class Property extends BaseProperty {
 
   public isEditable(): boolean {
     return !this.isId()
-            && !this.column.isCreateDate
-            && !this.column.isUpdateDate
+      && !this.column.isCreateDate
+      && !this.column.isUpdateDate
   }
 
   public isId(): boolean {
