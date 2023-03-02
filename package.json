@@ -17,8 +17,6 @@
     "typeorm admin",
     "admin panel"
   ],
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "scripts": {
     "clean": "rm -fR lib",
     "build": "tsc",
