@@ -21,7 +21,7 @@
     "clean": "rm -fR lib",
     "build": "tsc",
     "dev": "yarn clean && tsc -w",
-    "test": "mocha -r ts-node/register ./spec/**/*.spec.ts",
+    "test": "mocha --loader=ts-node/esm ./spec/**/*.spec.ts",
     "ts-node": "ts-node",
     "lint": "eslint './src/**/*.{ts,js}' './spec/**/*.{ts,js}' './example-app/**/*.{ts,js}' --ignore-pattern 'build' --ignore-pattern 'yarn.lock'",
     "migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -d spec/utils/test-data-source.ts",
@@ -64,13 +64,13 @@
     "eslint-plugin-react": "^7.20.3",
     "eslint-plugin-react-hooks": "^4.0.8",
     "husky": "^4.2.5",
-    "mocha": "^6.2.2",
+    "mocha": "^10.2.0",
     "pg": "^8.7.3",
     "semantic-release": "^17.0.7",
     "semantic-release-slack-bot": "^1.6.2",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.9.1",
     "tsconfig-paths": "^3.14.1",
-    "typeorm": "~0.3.0",
+    "typeorm": "^0.3.12",
     "typescript": "^5.1.0-dev.20230302"
   }
 }

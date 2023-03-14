@@ -1,9 +1,9 @@
 import { expect } from 'chai'
 
-import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata'
-import { Property } from '../src/Property'
-import { Car } from './entities/Car'
-import { dataSource } from './utils/test-data-source'
+import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata.js'
+import { Property } from '../src/Property.js'
+import { Car } from './entities/Car.js'
+import { dataSource } from './utils/test-data-source.js'
 
 describe('Property', () => {
   let columns: Array<ColumnMetadata>

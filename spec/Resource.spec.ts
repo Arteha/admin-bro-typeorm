@@ -1,13 +1,13 @@
+import { BaseProperty, BaseRecord, Filter, ValidationError } from 'adminjs'
 import { expect } from 'chai'
-import { BaseProperty, BaseRecord, ValidationError, Filter } from 'adminjs'
 import { validate } from 'class-validator'
 
-import { Car } from './entities/Car'
-import { CarDealer } from './entities/CarDealer'
-import { dataSource } from './utils/test-data-source'
+import { Car } from './entities/Car.js'
+import { CarDealer } from './entities/CarDealer.js'
+import { dataSource } from './utils/test-data-source.js'
 
-import { Resource } from '../src/Resource'
-import { CarBuyer } from './entities/CarBuyer'
+import { Resource } from '../src/Resource.js'
+import { CarBuyer } from './entities/CarBuyer.js'
 
 describe('Resource', () => {
   let resource: Resource
@@ -140,7 +140,7 @@ describe('Resource', () => {
       const params = await resource.create(data)
       const reference: any = {}
       reference[resource.idName()] = params.carId
-      const storedRecord: Car|null = await Car.findOneBy(reference)
+      const storedRecord: Car | null = await Car.findOneBy(reference)
 
       expect(storedRecord?.streetNumber).to.equal(data.streetNumber)
     })
@@ -149,7 +149,7 @@ describe('Resource', () => {
       const params = await resource.create(data)
       const reference: any = {}
       reference[resource.idName()] = params.carId
-      const storedRecord: Car|null = await Car.findOneBy(reference)
+      const storedRecord: Car | null = await Car.findOneBy(reference)
 
       expect(storedRecord?.stringAge).to.equal(4)
     })
@@ -158,7 +158,7 @@ describe('Resource', () => {
       const params = await resource.create(data)
       const reference: any = {}
       reference[resource.idName()] = params.carId
-      const storedRecord: Car|null = await Car.findOneBy(reference)
+      const storedRecord: Car | null = await Car.findOneBy(reference)
 
       expect(storedRecord?.meta).to.deep.equal({
         title: data['meta.title'],

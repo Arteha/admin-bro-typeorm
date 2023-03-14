@@ -1,7 +1,7 @@
 import { expect } from 'chai'
 
-import { dataSource } from './utils/test-data-source'
-import { Database } from '../src/Database'
+import { Database } from '../src/Database.js'
+import { dataSource } from './utils/test-data-source.js'
 
 describe('Database', () => {
   before(async () => {

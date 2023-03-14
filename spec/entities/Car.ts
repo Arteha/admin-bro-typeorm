@@ -1,10 +1,17 @@
+import { IsDefined, Max, Min } from 'class-validator'
 import {
-  Entity, Column, PrimaryGeneratedColumn, BaseEntity, ManyToOne,
-  JoinColumn, UpdateDateColumn, CreateDateColumn, RelationId,
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  RelationId,
+  UpdateDateColumn,
 } from 'typeorm'
-import { IsDefined, Min, Max } from 'class-validator'
-import { CarDealer } from './CarDealer'
-import { CarBuyer } from './CarBuyer'
+import { CarBuyer } from './CarBuyer.js'
+import { CarDealer } from './CarDealer.js'
 
 export enum CarType {
   MODERN = 'modern',

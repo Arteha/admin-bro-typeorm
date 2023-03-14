@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, OneToMany } from 'typeorm'
 import { IsDefined } from 'class-validator'
-import { Car } from './Car'
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm'
+import { Car } from './Car.js'
 
 @Entity()
 export class CarBuyer extends BaseEntity {

@@ -20,6 +20,10 @@
       "styled-components": ["node_modules/@types/styled-components"]
     }
   },
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
   "include": ["./src/**/*.ts"],
   "exclude": ["node_modules", "lib"]
 }
