@@ -3,8 +3,8 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./build/index.js",
-      "types": "./types/index.d.ts"
+      "import": "./lib/index.js",
+      "types": "./lib/index.d.ts"
     }
   },
   "version": "4.0.0",
@@ -46,8 +46,8 @@
   },
   "optionalDependencies": {},
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
     "@semantic-release/git": "^9.0.0",
     "@types/chai": "^4.2.4",
     "@types/mocha": "^5.2.7",
@@ -71,6 +71,6 @@
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^3.14.1",
     "typeorm": "^0.3.12",
-    "typescript": "^5.1.0-dev.20230302"
+    "typescript": "^4.9.5"
   }
 }

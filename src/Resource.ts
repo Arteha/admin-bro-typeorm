@@ -94,7 +94,8 @@ export class Resource extends BaseResource {
   }
 
   public async create(params: Record<string, any>): Promise<ParamsType> {
-    const instance = this.model.create(flat.unflatten(this.prepareParams(params)))
+    const unflattenedParams = flat.unflatten(this.prepareParams(params)) as Record<string, any>
+    const instance = this.model.create(unflattenedParams)
 
     await this.validateAndSave(instance)
 
