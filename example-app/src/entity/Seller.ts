@@ -9,11 +9,11 @@ export enum UserRoles {
 @Entity()
 export class Seller extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+    id: string
 
   @Column()
-  name: string;
+    name: string
 
   @OneToMany((type) => Car, (car) => car.seller)
-  cars: Array<Car>
+    cars: Array<Car>
 }

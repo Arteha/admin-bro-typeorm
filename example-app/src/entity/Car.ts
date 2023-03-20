@@ -5,27 +5,27 @@ import { Seller } from './Seller'
 @Entity()
 export class Car extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+    id: number
 
   @Column()
-  name: string;
+    name: string
 
   @Column({
     type: 'jsonb',
     nullable: true,
   })
-  meta: any;
+    meta: any
 
   @ManyToOne((type) => User, (user) => user.cars)
-  owner: User;
+    owner: User
 
   @ManyToOne((type) => Seller, (seller) => seller.cars)
-  seller: User;
+    seller: User
 
   // in order be able to fetch resources in adminjs - we have to have id available
   @RelationId((car: Car) => car.owner)
-  ownerId: number;
+    ownerId: number
 
   @RelationId((car: Car) => car.seller)
-  sellerId: string;
+    sellerId: string
 }

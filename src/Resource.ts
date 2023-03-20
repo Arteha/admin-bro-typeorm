@@ -9,11 +9,11 @@ import safeParseNumber from './utils/safe-parse-number.js'
 type ParamsType = Record<string, any>;
 
 export class Resource extends BaseResource {
-  public static validate: any;
+  public static validate: any
 
-  private model: typeof BaseEntity;
+  private model: typeof BaseEntity
 
-  private propsObject: Record<string, Property> = {};
+  private propsObject: Record<string, Property> = {}
 
   constructor(model: typeof BaseEntity) {
     super(model)

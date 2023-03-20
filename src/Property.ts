@@ -3,9 +3,9 @@ import { ColumnMetadata } from 'typeorm/metadata/ColumnMetadata.js'
 import { DATA_TYPES } from './utils/data-types.js'
 
 export class Property extends BaseProperty {
-  public column: ColumnMetadata;
+  public column: ColumnMetadata
 
-  private columnPosition: number;
+  private columnPosition: number
 
   constructor(column: ColumnMetadata, columnPosition = 0) {
     const path = column.propertyPath

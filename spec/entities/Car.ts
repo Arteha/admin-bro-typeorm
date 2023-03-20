@@ -22,63 +22,63 @@ export enum CarType {
 @Entity()
 export class Car extends BaseEntity {
   @PrimaryGeneratedColumn()
-  public carId: number;
+  public carId: number
 
   @Column()
   @IsDefined()
-  public name: string;
+  public name: string
 
   @Column()
-  public model: string;
-
-  @Column()
-  @Min(0)
-  @Max(15)
-  public age: number;
+  public model: string
 
   @Column()
   @Min(0)
   @Max(15)
-  public stringAge: number;
+  public age: number
+
+  @Column()
+  @Min(0)
+  @Max(15)
+  public stringAge: number
 
   @Column({ name: 'street_number', nullable: true })
-  public streetNumber: string;
+  public streetNumber: string
 
   @Column({
     type: 'enum',
     enum: CarType,
     default: CarType.GHOST,
   })
-  public carType: CarType;
+  public carType: CarType
 
   @Column({
     type: 'jsonb',
     nullable: true,
   })
-  public meta;
+  public meta
 
   @ManyToOne(() => CarDealer, (carDealer) => carDealer.cars)
   @JoinColumn({
     name: 'car_dealer_id',
   })
-  public carDealer: CarDealer;
+  public carDealer: CarDealer
 
   @Column({ name: 'car_dealer_id', type: 'integer', nullable: true })
-  public carDealerId: number;
+  public carDealerId: number
 
   @ManyToOne(() => CarBuyer, (carBuyer) => carBuyer.cars)
   @JoinColumn({
     name: 'car_buyer_id',
   })
-  public carBuyer: CarBuyer;
+  public carBuyer: CarBuyer
 
   @Column({ name: 'car_buyer_id', type: 'uuid', nullable: true })
   @RelationId((car: Car) => car.carBuyer)
-  public carBuyerId: string;
+  public carBuyerId: string
 
   @CreateDateColumn({ name: 'created_at' })
-  public createdAt: Date;
+  public createdAt: Date
 
   @UpdateDateColumn({ name: 'updated_at' })
-  public updatedAt: Date;
+  public updatedAt: Date
 }

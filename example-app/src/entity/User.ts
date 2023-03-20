@@ -9,23 +9,23 @@ export enum UserRoles {
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id: number;
+    id: number
 
   @Column()
-  firstName: string;
+    firstName: string
 
   @Column()
-  lastName: string;
+    lastName: string
 
   @Column()
-  age: number;
+    age: number
 
   @Column({
     type: 'enum',
     enum: UserRoles,
   })
-  role: UserRoles;
+    role: UserRoles
 
   @OneToMany((type) => Car, (car) => car.owner)
-  cars: Array<Car>
+    cars: Array<Car>
 }

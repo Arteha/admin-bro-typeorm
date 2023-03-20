@@ -23,7 +23,7 @@
     "dev": "yarn clean && tsc -w",
     "test": "mocha --loader=ts-node/esm ./spec/**/*.spec.ts",
     "ts-node": "ts-node",
-    "lint": "eslint './src/**/*.{ts,js}' './spec/**/*.{ts,js}' './example-app/**/*.{ts,js}' --ignore-pattern 'build' --ignore-pattern 'yarn.lock'",
+    "lint": "eslint './src/**/*.{ts,js}' --ignore-pattern 'build' --ignore-pattern 'yarn.lock'",
     "migrate": "ts-node ./node_modules/typeorm/cli.js migration:run -d spec/utils/test-data-source.ts",
     "check:all": "yarn lint && yarn test && yarn build",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
