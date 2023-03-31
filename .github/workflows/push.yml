@@ -63,9 +63,8 @@ jobs:
         run: yarn lint
       - name: Migrate
         run: yarn run migrate
-      # TODO: Figure out why tests are failing in CI
-      # - name: Test
-      #   run: yarn test
+      - name: Test
+        run: yarn test
  
   publish:
     name: Publish
