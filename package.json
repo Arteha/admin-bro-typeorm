@@ -41,7 +41,7 @@
   "author": "Artem Zabolotnyi <1arteha1@gmail.com>",
   "license": "MIT",
   "peerDependencies": {
-    "adminjs": ">=6.0.0",
+    "adminjs": "^7.0.0",
     "typeorm": "~0.3.0"
   },
   "optionalDependencies": {},
@@ -54,7 +54,7 @@
     "@types/node": "^18.15.3",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
-    "adminjs": "^7.0.0-beta-v7.3",
+    "adminjs": "^7.0.0",
     "chai": "^4.3.7",
     "class-validator": "^0.14.0",
     "eslint": "^8.36.0",
